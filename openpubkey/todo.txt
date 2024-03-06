@@ -1,3 +1,0 @@
-config file policy.yaml bash script
-login time key generate and append to target server
-normal ssh
