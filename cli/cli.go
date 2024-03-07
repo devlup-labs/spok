@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/devlup-labs/sos/internal/pkg/policy"
+	// "github.com/devlup-labs/sos/internal/pkg/policy"
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/devlup-labs/sos/openpubkey/client"
 	"github.com/devlup-labs/sos/openpubkey/client/providers"
@@ -22,7 +22,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load("../.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -61,15 +61,53 @@ func main() {
 			emailArgs := os.Args[2]
 			userArgs := os.Args[3]
 
-			os.Create("../policy.yml")
+			principal := strings.Split(userArgs, "@")[0]
 
-			policy.AddPolicy(emailArgs, userArgs)
-			cmd := exec.Command("cd","..")
+			cmd := exec.Command(
+				"scp",
+				"scripts/configure-opk-server.sh",
+				userArgs+":/root/configure-opk-server.sh",
+			)
 			err := cmd.Run()
-			if err!= nil{
-				log.Fatalln(err)
+			if err != nil {
+				log.Fatal(err)
 			}
-			
+
+			cmd2 := exec.Command(
+				"scp",
+				"verifier/verifier",
+				userArgs+":/root/verifier",
+			)
+			err = cmd2.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			cmd3 := exec.Command(
+				"ssh",
+				userArgs,
+				"chmod",
+				"+x",
+				"/root/configure-opk-server.sh",
+			)
+			err = cmd3.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			cmd4 := exec.Command(
+				"ssh",
+				userArgs,
+				"/root/configure-opk-server.sh",
+				emailArgs,
+				principal,
+			)
+			err = cmd4.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println("Configured SOS server for:", emailArgs)
 		}
 	case "login":
 		{
@@ -95,7 +133,7 @@ func main() {
 				client.WithSigner(signer, alg),
 				client.WithSignGQ(false),
 			)
-			if  err!= nil{
+			if err != nil {
 				fmt.Println(err)
 			}
 
