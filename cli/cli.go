@@ -6,16 +6,18 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
-	"os"
 
+	"github.com/devlup-labs/sos/internal/pkg/policy"
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
-	"github.com/joho/godotenv"
-	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/devlup-labs/sos/openpubkey/client"
 	"github.com/devlup-labs/sos/openpubkey/client/providers"
 	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/joho/godotenv"
+	"github.com/lestrrat-go/jwx/v2/jwa"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -37,10 +39,10 @@ func main() {
 
 	clientID := os.Getenv("GOOGLE_CLIENT_ID")
 	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
-	scopes       := []string{"openid profile email"}
+	scopes := []string{"openid profile email"}
 	redirURIPort := os.Getenv("REDIRECT_URI_PORT")
 	callbackPath := os.Getenv("CALLBACK_PATH")
-	redirectURI  := fmt.Sprintf(
+	redirectURI := fmt.Sprintf(
 		"http://localhost:%v%v", redirURIPort, callbackPath,
 	)
 
@@ -56,6 +58,18 @@ func main() {
 	switch command {
 	case "configure":
 		{
+			emailArgs := os.Args[2]
+			userArgs := os.Args[3]
+
+			os.Create("../policy.yml")
+
+			policy.AddPolicy(emailArgs, userArgs)
+			cmd := exec.Command("cd","..")
+			err := cmd.Run()
+			if err!= nil{
+				log.Fatalln(err)
+			}
+			
 		}
 	case "login":
 		{
@@ -81,6 +95,9 @@ func main() {
 				client.WithSigner(signer, alg),
 				client.WithSignGQ(false),
 			)
+			if  err!= nil{
+				fmt.Println(err)
+			}
 
 			certBytes, seckeySshPem, err := createSSHCert(
 				context.Background(), opkClient, principals,

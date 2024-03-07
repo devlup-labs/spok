@@ -11,17 +11,17 @@ fi
 if sudo -nl &> /dev/null || $(id -u) -ne 0; then
     echo "User has sudo privileges without a password."
     # Create the default opk directory
-    sudo mkdir -p /etc/opk
+    sudo mkdir -p /etc/sos
 
     # Install the opk verifier
-    sudo mv opk-ssh /etc/opk
-    sudo chown root /etc/opk/opk-ssh
-    sudo chmod 700 /etc/opk/opk-ssh
+    sudo mv opk-ssh /etc/sos
+    sudo chown root /etc/sos/opk-ssh
+    sudo chmod 700 /etc/sos/opk-ssh
 
     # Create root policy yaml file which is a yaml file
-    sudo touch /etc/opk/policy.yml
-    sudo chown root /etc/opk/policy.yml
-    sudo chmod 600 /etc/opk/policy.yml
+    sudo touch /etc/sos/policy.yml
+    sudo chown root /etc/sos/policy.yml
+    sudo chmod 600 /etc/sos/policy.yml
 
     sudo /etc/opk/opk-ssh add "${EMAIL}" "${USER}"
 
@@ -41,15 +41,15 @@ EOT
 else
     echo "The user is not root and does not have sudo access; adding resources to user's home directory"
 
-    mkdir ~/.opk
+    mkdir ~/.sos
 
     # Install the opk-ssh client to user's home directory
-    mv opk-ssh ~/.opk
-    chmod 700 ~/.opk/opk-ssh
+    mv opk-ssh ~/.sos
+    chmod 700 ~/.sos/opk-ssh
 
     # Create a personal policy yaml file in user's home directory
-    touch ~/.opk/policy.yml
-    chmod 600 ~/.opk/policy.yml
+    touch ~/.sos/policy.yml
+    chmod 600 ~/.sos/policy.yml
 
     ~/.opk/opk-ssh add "${EMAIL}" "${USER}"
     exit 0
