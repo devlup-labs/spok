@@ -7,14 +7,14 @@ import (
 	"strings"
 
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
+	"github.com/devlup-labs/sos/openpubkey/client"
+	"github.com/devlup-labs/sos/openpubkey/client/providers"
 	"github.com/joho/godotenv"
-	"github.com/openpubkey/openpubkey/client"
-	"github.com/openpubkey/openpubkey/client/providers"
 	"golang.org/x/crypto/ssh"
 )
 
 func main() {
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -31,10 +31,10 @@ func main() {
 
 	clientID := os.Getenv("GOOGLE_CLIENT_ID")
 	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
-	scopes       := []string{"openid profile email"}
+	scopes := []string{"openid profile email"}
 	redirURIPort := os.Getenv("REDIRECT_URI_PORT")
 	callbackPath := os.Getenv("CALLBACK_PATH")
-	redirectURI  := fmt.Sprintf(
+	redirectURI := fmt.Sprintf(
 		"http://localhost:%v%v", redirURIPort, callbackPath,
 	)
 

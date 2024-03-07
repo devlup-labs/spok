@@ -13,14 +13,14 @@ import (
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/joho/godotenv"
 	"github.com/lestrrat-go/jwx/v2/jwa"
-	"github.com/openpubkey/openpubkey/client"
-	"github.com/openpubkey/openpubkey/client/providers"
-	"github.com/openpubkey/openpubkey/util"
+	"github.com/devlup-labs/sos/openpubkey/client"
+	"github.com/devlup-labs/sos/openpubkey/client/providers"
+	"github.com/devlup-labs/sos/openpubkey/util"
 	"golang.org/x/crypto/ssh"
 )
 
 func main() {
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}

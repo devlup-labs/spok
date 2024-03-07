@@ -7,9 +7,9 @@ import (
 	"fmt"
 
 	"github.com/lestrrat-go/jwx/v2/jwk"
-	"github.com/openpubkey/openpubkey/client"
-	"github.com/openpubkey/openpubkey/pktoken"
-	"github.com/openpubkey/openpubkey/util"
+	"github.com/devlup-labs/sos/openpubkey/client"
+	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/sos/openpubkey/util"
 	"golang.org/x/crypto/ssh"
 )
 

@@ -5,11 +5,11 @@ import (
 	"testing"
 
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
+	"github.com/devlup-labs/sos/openpubkey/client/providers"
+	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/sos/openpubkey/pktoken/mocks"
+	"github.com/devlup-labs/sos/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
-	"github.com/openpubkey/openpubkey/client/providers"
-	"github.com/openpubkey/openpubkey/pktoken"
-	"github.com/openpubkey/openpubkey/pktoken/mocks"
-	"github.com/openpubkey/openpubkey/util"
 	"golang.org/x/crypto/ssh"
 )
 

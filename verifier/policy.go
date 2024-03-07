@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/openpubkey/openpubkey/pktoken"
+	"github.com/devlup-labs/sos/openpubkey/pktoken"
 	"golang.org/x/exp/slices"
 )
 
