@@ -28,8 +28,7 @@ func getFileSize(file string) (int64, error) {
 	return fileinfo.Size(), nil
 }
 
-func (p *Policy) unMarshal(filename string) error {
-
+func (p *Policy) Unmarshal(filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
 		return err
@@ -50,7 +49,7 @@ func (p *Policy) unMarshal(filename string) error {
 
 func AddPolicy(email string, principal string) {
 	newInstance := new(Policy)
-	err := newInstance.unMarshal("../policy.yml")
+	err := newInstance.Unmarshal("/etc/sos/policy.yml")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -79,7 +78,7 @@ func AddPolicy(email string, principal string) {
 		newInstance.User = append(newInstance.User, *toAdd)
 	}
 	fmt.Println(newInstance)
-	f, err := os.Create("../policy.yml")
+	f, err := os.Create("/etc/sos/policy.yml")
 	if err != nil {
 		fmt.Println("File not Found policy.yml")
 	}
