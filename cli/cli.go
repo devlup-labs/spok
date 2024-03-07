@@ -64,8 +64,8 @@ func main() {
 
 			cmd := exec.Command(
 				"scp",
-				"scripts/configure-opk-server.sh",
-				userArgs+":/root/configure-opk-server.sh",
+				"scripts/configure-sos-server.sh",
+				userArgs+":/root/configure-sos-server.sh",
 			)
 			err := cmd.Run()
 			if err != nil {
@@ -87,7 +87,7 @@ func main() {
 				userArgs,
 				"chmod",
 				"+x",
-				"/root/configure-opk-server.sh",
+				"/root/configure-sos-server.sh",
 			)
 			err = cmd3.Run()
 			if err != nil {
@@ -97,7 +97,7 @@ func main() {
 			cmd4 := exec.Command(
 				"ssh",
 				userArgs,
-				"/root/configure-opk-server.sh",
+				"/root/configure-sos-server.sh",
 				emailArgs,
 				principal,
 			)
