@@ -50,7 +50,7 @@ func (p *Policy) unMarshal(filename string) error {
 
 func AddPolicy(email string, principal string) {
 	newInstance := new(Policy)
-	err := newInstance.unMarshal("policy.yml")
+	err := newInstance.unMarshal("../policy.yml")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -79,7 +79,7 @@ func AddPolicy(email string, principal string) {
 		newInstance.User = append(newInstance.User, *toAdd)
 	}
 	fmt.Println(newInstance)
-	f, err := os.Create("policy.yml")
+	f, err := os.Create("../policy.yml")
 	if err != nil {
 		fmt.Println("File not Found policy.yml")
 	}
