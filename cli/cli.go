@@ -95,6 +95,9 @@ func main() {
 				client.WithSigner(signer, alg),
 				client.WithSignGQ(false),
 			)
+			if  err!= nil{
+				fmt.Println(err)
+			}
 
 			certBytes, seckeySshPem, err := createSSHCert(
 				context.Background(), opkClient, principals,
