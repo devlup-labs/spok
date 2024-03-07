@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"strings"
+	// "strings"
 
 	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/sos/internal/pkg/policy"
 	"golang.org/x/exp/slices"
 )
 
@@ -31,25 +32,36 @@ func (p *simpleFilePolicyEnforcer) readPolicyFile() (string, []string, error) {
 		)
 	}
 
-	content, err := os.ReadFile(p.PolicyFilePath)
+	// content, err := os.ReadFile(p.PolicyFilePath)
+	// if err != nil {
+	// 	return "", nil, err
+	// }
+
+	// rows := strings.Split(string(content), "\n")
+
+	newInstance := new(policy.Policy)
+	err = newInstance.Unmarshal("/etc/sos/policy.yml")
 	if err != nil {
 		return "", nil, err
 	}
 
-	rows := strings.Split(string(content), "\n")
+	email := newInstance.User[0].Email
+	principals := newInstance.User[0].Principals
 
-	for _, row := range rows {
-		entries := strings.Fields(row)
+	// for _, row := range rows {
+	// 	entries := strings.Fields(row)
 
-		if len(entries) > 1 {
-			email := entries[0]
-			allowedPrincipals := entries[1:]
+	// 	if len(entries) > 1 {
+	// 		email := entries[0]
+	// 		allowedPrincipals := entries[1:]
 
-			return email, allowedPrincipals, nil
-		}
-	}
+	// 		return email, allowedPrincipals, nil
+	// 	}
+	// }
 
-	return "", nil, fmt.Errorf("policy file contained no policy")
+	return email, principals, nil
+
+	// return "", nil, fmt.Errorf("policy file contained no policy")
 }
 
 func (p *simpleFilePolicyEnforcer) checkPolicy(

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
-	
+
 	"github.com/devlup-labs/sos/internal/pkg/policy"
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/devlup-labs/sos/openpubkey/client"
@@ -14,11 +14,8 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-
-
-
 func main() {
-	err := godotenv.Load("../.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -54,11 +51,16 @@ func main() {
 	switch command {
 	case "add":
 		{
+			if len(os.Args) != 4 {
+				fmt.Println("Invalid number of arguments for add, should be `verifier add <Email> <User (TOKEN u)>`")
+
+				os.Exit(1)
+			}
+
 			emailArgs := os.Args[2]
 			userArgs := os.Args[3]
 
 			policy.AddPolicy(emailArgs, userArgs)
-
 		}
 	case "verify":
 		{
