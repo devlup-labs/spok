@@ -11,7 +11,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	// "github.com/devlup-labs/sos/internal/pkg/policy"
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/devlup-labs/sos/openpubkey/client"
 	"github.com/devlup-labs/sos/openpubkey/client/providers"
@@ -117,8 +116,6 @@ func main() {
 				os.Exit(1)
 			}
 
-			// If principals is empty the server does not enforce any principal.
-			// The OPK verifier should use policy to make this decision.
 			principals := []string{}
 
 			alg := jwa.ES256

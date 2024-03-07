@@ -19,8 +19,8 @@ type Policy struct {
 	User []UsersDetails `yaml:"user"`
 }
 
-func getFileSize(file string) (int64, error) {
-	fileinfo, err := os.Stat(file)
+func getFileSize(filename string) (int64, error) {
+	fileinfo, err := os.Stat(filename)
 	if err != nil {
 		return 0, err
 	}
@@ -34,68 +34,86 @@ func (p *Policy) Unmarshal(filename string) error {
 		return err
 	}
 	defer file.Close()
-	// var details []UsersDetails
-	maxCapacity, _ := getFileSize(filename)
+
+	fileSize, _ := getFileSize(filename)
+	data := make([]byte, fileSize)
+
 	reader := bufio.NewReader(file)
-	data := make([]byte, maxCapacity)
+
 	_, err = reader.Read(data)
 	if err != nil {
 		fmt.Println(err)
+
 		return err
 	}
-	// p.Users = details
+
 	return yaml.Unmarshal(data, &p)
 }
 
 func AddPolicy(email string, principal string) {
-	newInstance := new(Policy)
-	err := newInstance.Unmarshal("/etc/sos/policy.yml")
+	policy := new(Policy)
+
+	err := policy.Unmarshal("/etc/sos/policy.yml")
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	i := 0
 	idx := 0
-	toAdd := new(UsersDetails)
-	toAdd.Email = email
-	toAdd.Principals = []string{principal}
-	for _, u := range newInstance.User {
+
+	userDetails := new(UsersDetails)
+	userDetails.Email = email
+	userDetails.Principals = []string{principal}
+
+	for _, u := range policy.User {
 		if u.Email == email {
 			if !slices.Contains(u.Principals, principal) {
-				u.Principals = slices.Concat(u.Principals, toAdd.Principals)
+				u.Principals = slices.Concat(
+					u.Principals, userDetails.Principals,
+				)
+
 				fmt.Println("Email exists adding Permission")
-				newInstance.User[idx].Principals = u.Principals
+
+				policy.User[idx].Principals = u.Principals
+
 				i = 1
+
 				break
 			} else {
 				i = 1
+
 				fmt.Println("User Exists")
+
 				break
 			}
 		}
+
 		idx += 1
 	}
+
 	if i != 1 {
-		newInstance.User = append(newInstance.User, *toAdd)
+		policy.User = append(policy.User, *userDetails)
 	}
-	fmt.Println(newInstance)
+
 	f, err := os.Create("/etc/sos/policy.yml")
 	if err != nil {
 		fmt.Println("File not Found policy.yml")
-	}
-	yamlData2, err := yaml.Marshal(&newInstance)
-	if err != nil {
-		fmt.Println("Error while Marshalling. ", err)
-	}
-	l, err := f.WriteString(string(yamlData2))
-	if err != nil {
-		fmt.Println(err)
-		f.Close()
+
 		return
 	}
-	fmt.Println(l, "bytes written successfully")
-	err = f.Close()
+	defer f.Close()
+
+	yamlData, err := yaml.Marshal(&policy)
+	if err != nil {
+		fmt.Println("Error while Marshalling. ", err)
+
+		return
+	}
+
+	_, err = f.WriteString(string(yamlData))
 	if err != nil {
 		fmt.Println(err)
+
 		return
 	}
 }

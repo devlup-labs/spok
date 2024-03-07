@@ -6,8 +6,6 @@ import (
 	"io/fs"
 	"os"
 
-	// "strings"
-
 	"github.com/devlup-labs/sos/internal/pkg/policy"
 	"github.com/devlup-labs/sos/openpubkey/pktoken"
 	"golang.org/x/exp/slices"
@@ -25,7 +23,6 @@ func (p *simpleFilePolicyEnforcer) readPolicyFile() (*policy.Policy, error) {
 
 	mode := info.Mode()
 
-	// Only the owner of this file should be able to write to it
 	if mode.Perm() != fs.FileMode(0600) {
 		return nil, fmt.Errorf(
 			"policy file has insecure permissions, expected (0600), got (%o)",
@@ -33,33 +30,13 @@ func (p *simpleFilePolicyEnforcer) readPolicyFile() (*policy.Policy, error) {
 		)
 	}
 
-	// content, err := os.ReadFile(p.PolicyFilePath)
-	// if err != nil {
-	// 	return "", nil, err
-	// }
-
-	// rows := strings.Split(string(content), "\n")
-
-	newInstance := new(policy.Policy)
-	err = newInstance.Unmarshal("/etc/sos/policy.yml")
+	allowedPolicy := new(policy.Policy)
+	err = allowedPolicy.Unmarshal("/etc/sos/policy.yml")
 	if err != nil {
 		return nil, err
 	}
 
-	// for _, row := range rows {
-	// 	entries := strings.Fields(row)
-
-	// 	if len(entries) > 1 {
-	// 		email := entries[0]
-	// 		allowedPrincipals := entries[1:]
-
-	// 		return email, allowedPrincipals, nil
-	// 	}
-	// }
-
-	return newInstance, err
-
-	// return "", nil, fmt.Errorf("policy file contained no policy")
+	return allowedPolicy, err
 }
 
 func (p *simpleFilePolicyEnforcer) checkPolicy(
@@ -70,7 +47,6 @@ func (p *simpleFilePolicyEnforcer) checkPolicy(
 		return err
 	}
 
-
 	var claims struct {
 		Email string `json:"email"`
 	}
@@ -79,12 +55,11 @@ func (p *simpleFilePolicyEnforcer) checkPolicy(
 		return err
 	}
 
-	for _, u := range allowedPolicy.User{
-		if u.Email == claims.Email{
-			if slices.Contains(u.Principals, principalDesired){
-				// access Granted
+	for _, u := range allowedPolicy.User {
+		if u.Email == claims.Email {
+			if slices.Contains(u.Principals, principalDesired) {
 				return nil
-			}else{
+			} else {
 				return fmt.Errorf(
 					"no policy to allow %s to assume %s, check policy config",
 					claims.Email,
@@ -92,28 +67,8 @@ func (p *simpleFilePolicyEnforcer) checkPolicy(
 				)
 			}
 		}
-	} 
-	// if string(claims.Email) == allowedEmail {
-	// 	if slices.Contains(allowedPrincipals, principalDesired) {
-	// 		// Access granted
+	}
 
-	// 		return nil
-	// 	} else {
-	// 		return fmt.Errorf(
-	// 			"no policy to allow %s to assume %s, check policy config in %s",
-	// 			claims.Email,
-	// 			principalDesired,
-	// 			p.PolicyFilePath,
-	// 		)
-	// 	}
-	// } else {
-	// 	return fmt.Errorf(
-	// 		"no policy for email %s, allowed email is %s, check policy config in %s",
-	// 		claims.Email,
-	// 		allowedEmail,
-	// 		p.PolicyFilePath,
-	// 	)
-	// }
 	return fmt.Errorf("no email or policy found")
 }
 

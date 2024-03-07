@@ -111,6 +111,7 @@ func main() {
 //	%u The username (requested principal) - userArg
 //	%t The public key type - typArg - in this case a certificate being used as a public key
 //	%k The base64-encoded public key for authentication - certB64Arg - the public key is also a certificate
+
 func authorizedKeysCommand(
 	userArg string,
 	typArg string,
@@ -128,10 +129,6 @@ func authorizedKeysCommand(
 	} else if err := policyEnforcer(userArg, pkt); err != nil {
 		return "", err
 	} else {
-		// sshd expects the public key in the cert, not the cert itself.
-		// This public key is key of the CA the signs the cert, in our
-		// setting there is no CA.
-
 		pubkeyBytes := ssh.MarshalAuthorizedKey(cert.SshCert.SignatureKey)
 
 		return "cert-authority " + string(pubkeyBytes), nil
