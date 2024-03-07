@@ -5,13 +5,17 @@ import (
 	"log"
 	"os"
 	"strings"
-
+	
+	"github.com/devlup-labs/sos/internal/pkg/policy"
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/devlup-labs/sos/openpubkey/client"
 	"github.com/devlup-labs/sos/openpubkey/client/providers"
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/ssh"
 )
+
+
+
 
 func main() {
 	err := godotenv.Load("../.env")
@@ -50,6 +54,11 @@ func main() {
 	switch command {
 	case "add":
 		{
+			emailArgs := os.Args[2]
+			userArgs := os.Args[3]
+
+			policy.AddPolicy(emailArgs, userArgs)
+
 		}
 	case "verify":
 		{

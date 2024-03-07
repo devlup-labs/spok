@@ -13,6 +13,7 @@ require (
 	github.com/zitadel/oidc/v2 v2.11.0
 	golang.org/x/crypto v0.21.0
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
