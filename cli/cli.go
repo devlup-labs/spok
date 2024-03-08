@@ -62,46 +62,121 @@ func main() {
 
 			principal := strings.Split(userArgs, "@")[0]
 
-			cmd := exec.Command(
-				"scp",
-				"scripts/configure-sos-server.sh",
-				userArgs+":/root/configure-sos-server.sh",
+			privateKeyAuth := false
+			privateKeyPath := ""
+
+			if len(os.Args) == 6 {
+				if os.Args[4] == "-i" {
+					privateKeyAuth = true
+					privateKeyPath = os.Args[5]
+				}
+			}
+
+			var scpCommandScript []string
+			var scpCommandVerifier []string
+			var sshCommandChmod []string
+			var sshCommandConfigure []string
+
+			if privateKeyAuth && privateKeyPath != "" {
+				scpCommandScript = []string{
+					"scp",
+					"-i",
+					privateKeyPath,
+					"scripts/configure-sos-server.sh",
+					userArgs + ":/root/configure-sos-server.sh",
+				}
+				scpCommandVerifier = []string{
+					"scp",
+					"-i",
+					privateKeyPath,
+					"verifier/verifier",
+					userArgs + ":/root/verifier",
+				}
+				sshCommandChmod = []string{
+					"ssh",
+					"-i",
+					privateKeyPath,
+					userArgs,
+					"chmod",
+					"+x",
+					"/root/configure-sos-server.sh",
+				}
+				sshCommandConfigure = []string{
+					"ssh",
+					"-i",
+					privateKeyPath,
+					userArgs,
+					"/root/configure-sos-server.sh",
+					emailArgs,
+					principal,
+				}
+			} else {
+				scpCommandScript = []string{
+					"scp",
+					"scripts/configure-sos-server.sh",
+					userArgs + ":/root/configure-sos-server.sh",
+				}
+				scpCommandVerifier = []string{
+					"scp",
+					"verifier/verifier",
+					userArgs + ":/root/verifier",
+				}
+				sshCommandChmod = []string{
+					"ssh",
+					userArgs,
+					"chmod",
+					"+x",
+					"/root/configure-sos-server.sh",
+				}
+				sshCommandConfigure = []string{
+					"ssh",
+					userArgs,
+					"/root/configure-sos-server.sh",
+					emailArgs,
+					principal,
+				}
+			}
+
+			scpCmdScript := exec.Command(
+				scpCommandScript[0], scpCommandScript[1:]...,
 			)
-			err := cmd.Run()
+
+			fmt.Println("Copying configuration script to server...")
+
+			err := scpCmdScript.Run()
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			cmd2 := exec.Command(
-				"scp",
-				"verifier/verifier",
-				userArgs+":/root/verifier",
+			scpCmdVerifier := exec.Command(
+				scpCommandVerifier[0], scpCommandVerifier[1:]...,
 			)
-			err = cmd2.Run()
+
+			fmt.Println("Copying verifier to server...")
+
+			err = scpCmdVerifier.Run()
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			cmd3 := exec.Command(
-				"ssh",
-				userArgs,
-				"chmod",
-				"+x",
-				"/root/configure-sos-server.sh",
+			sshCmdChmod := exec.Command(
+				sshCommandChmod[0], sshCommandChmod[1:]...,
 			)
-			err = cmd3.Run()
+
+			fmt.Println("Making configuration script executable...")
+
+			err = sshCmdChmod.Run()
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			cmd4 := exec.Command(
-				"ssh",
-				userArgs,
-				"/root/configure-sos-server.sh",
-				emailArgs,
-				principal,
+			sshCmdConfigure := exec.Command(
+				sshCommandConfigure[0], sshCommandConfigure[1:]...,
 			)
-			err = cmd4.Run()
+
+			fmt.Println("Configuring SOS server...")
+
+			err = sshCmdConfigure.Run()
 			if err != nil {
 				log.Fatal(err)
 			}
