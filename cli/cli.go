@@ -15,18 +15,12 @@ import (
 	"github.com/devlup-labs/sos/openpubkey/client"
 	"github.com/devlup-labs/sos/openpubkey/client/providers"
 	"github.com/devlup-labs/sos/openpubkey/util"
-	"github.com/joho/godotenv"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"golang.org/x/crypto/ssh"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	if len(os.Args) < 2 {
+		if len(os.Args) < 2 {
 		fmt.Printf(
 			"Secure Openpubkey Shell Client: Command choices are: configure, login",
 		)

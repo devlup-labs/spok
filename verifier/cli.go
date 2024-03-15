@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -10,15 +9,10 @@ import (
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/devlup-labs/sos/openpubkey/client"
 	"github.com/devlup-labs/sos/openpubkey/client/providers"
-	"github.com/joho/godotenv"
 	"golang.org/x/crypto/ssh"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	if len(os.Args) < 2 {
 		fmt.Printf(
