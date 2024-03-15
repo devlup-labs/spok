@@ -36,14 +36,13 @@ func main() {
 
 	command := os.Args[1]
 
-	clientID := os.Getenv("GOOGLE_CLIENT_ID")
-	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
-	scopes := []string{"openid profile email"}
-	redirURIPort := os.Getenv("REDIRECT_URI_PORT")
-	callbackPath := os.Getenv("CALLBACK_PATH")
-	redirectURI := fmt.Sprintf(
-		"http://localhost:%v%v", redirURIPort, callbackPath,
-	)
+	clientID := "992028499768-ce9juclb3vvckh23r83fjkmvf1lvjq18.apps.googleusercontent.com"
+	// The clientSecret was intentionally checked in. It holds no power and is used for development. Do not report as a security issue
+	clientSecret := "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" // Google requires a ClientSecret even if this a public OIDC App
+	scopes       := []string{"openid profile email"}
+	redirURIPort := "3000"
+	callbackPath := "/login-callback"
+	redirectURI  := fmt.Sprintf("http://localhost:%v%v", redirURIPort, callbackPath)
 
 	op := providers.GoogleOp{
 		ClientID:     clientID,
