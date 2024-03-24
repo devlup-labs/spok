@@ -22,7 +22,6 @@ var configureCmd = &cobra.Command{
 		serverFlag, _ := cmd.Flags().GetString("server")
 		keyFlag, _ := cmd.Flags().GetString("key")
 		emailFlag, _ := cmd.Flags().GetString("email")
-		path, _ := cmd.Flags().GetString("path")
 		emailArgs := emailFlag
 		userArgs := serverFlag
 
@@ -31,10 +30,10 @@ var configureCmd = &cobra.Command{
 		privateKeyAuth := false
 		privateKeyPath := ""
 
-		if keyFlag == "i" && path != "" {
+		if keyFlag != "" {
 			fmt.Println("Private Key Mode selected.")
 			privateKeyAuth = true
-			privateKeyPath = path
+			privateKeyPath = keyFlag
 		}
 
 		var scpCommandScript []string
@@ -152,8 +151,7 @@ var configureCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(configureCmd)
-	configureCmd.Flags().String("path", "", "The path of the key")
 	configureCmd.Flags().String("server", "", "The server you want to configure in")
 	configureCmd.Flags().String("email", "", "The email you want to configure with")
-	configureCmd.Flags().String("key", "", "To choose if you want to use private key for setup")
+	configureCmd.Flags().StringP("key", "i", "", "To choose if you want to use private key for setup")
 }
