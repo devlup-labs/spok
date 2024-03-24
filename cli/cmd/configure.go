@@ -15,8 +15,9 @@ import (
 // configureCmd represents the configure command
 var configureCmd = &cobra.Command{
 	Use:   "configure",
-	Short: "To configure the server for SSH",
-	Long:  `To configure the server for SOS.`,
+	Short: "Configures the target server for our SOS app",
+	Long:  `It sets up the server with various binaries and scripts for our OpenPubkey 
+	authentication.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("---Setup Initiated----")
 		serverFlag, _ := cmd.Flags().GetString("server")
