@@ -144,7 +144,7 @@ var verifyCmd = &cobra.Command{
 	Use:   "verify",
 	Short: "Verifies OPK tokens",
 	Long: `
-This function is called by the SSH server as the authorizedKeysCommand:
+This command is called by the SSH server as the authorizedKeysCommand:
 
 The following lines are added to /etc/ssh/sshd_config:
 
