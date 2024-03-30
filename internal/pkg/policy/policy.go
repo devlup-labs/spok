@@ -117,3 +117,82 @@ func AddPolicy(email string, principal string) {
 		return
 	}
 }
+
+func findIndex(x []UsersDetails, y UsersDetails) int {
+	idx := 0
+	for _, i := range x {
+		if i.Email == y.Email {
+			break
+		}
+		idx += 1
+	}
+	return idx
+}
+
+func RemovePolicy(email string, principal string) {
+	policy := new(Policy)
+	err := policy.Unmarshal("/etc/sos/policy.yml")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	userDetails := new(UsersDetails)
+	userDetails.Email = email
+	userDetails.Principals = []string{principal}
+
+	var prompt string
+	i := 0
+
+	for _, u := range policy.User {
+		if u.Email == email {
+			if slices.Contains(u.Principals, principal) {
+				fmt.Println("Removing principal ", principal)
+				idx_user := findIndex(policy.User, u)
+				idx := slices.Index(u.Principals, principal)
+				policy.User[idx_user].Principals[idx] = u.Principals[len(policy.User[idx_user].Principals)-1]
+				policy.User[idx_user].Principals = u.Principals[:len(policy.User[idx_user].Principals)-1]
+				i = 1
+				break
+			} else {
+				fmt.Println("This Principal does not exist")
+			}
+		}
+	}
+
+	if i != 1 {
+		fmt.Println("Do you want to remove the user ? (y/n)")
+		fmt.Scan(&prompt)
+		if prompt == "y" {
+			for _, u := range policy.User {
+				if u.Email == email {
+					idx := findIndex(policy.User, u)
+					policy.User[idx] = policy.User[len(policy.User)-1]
+					policy.User = policy.User[:len(policy.User)-1]
+					break
+				}
+			}
+		} else {
+			fmt.Println("Ok")
+		}
+	}
+
+	f, err := os.Create("/etc/sos/policy.yml")
+	if err != nil {
+		fmt.Println("File not Found policy.yml")
+		return
+	}
+	defer f.Close()
+
+	yamlData, err := yaml.Marshal(&policy)
+	if err != nil {
+		fmt.Println("Error while Marshalling. ", err)
+		return
+	}
+
+	_, err = f.WriteString(string(yamlData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+}
