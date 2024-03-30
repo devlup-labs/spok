@@ -9,35 +9,47 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/devlup-labs/sos/internal/pkg/constants"
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/devlup-labs/sos/openpubkey/client"
-	"github.com/devlup-labs/sos/openpubkey/client/providers"
 	"github.com/devlup-labs/sos/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
 )
 
-var (
-	clientID = "992028499768-ce9juclb3vvckh23r83fjkmvf1lvjq18.apps.googleusercontent.com"
-	// The clientSecret was intentionally checked in. It holds no power and is used for development. Do not report as a security issue
-	clientSecret = "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" // Google requires a ClientSecret even if this a public OIDC App
-	scopes       = []string{"openid profile email"}
-	redirURIPort = "3000"
-	callbackPath = "/login-callback"
-	redirectURI  = fmt.Sprintf("http://localhost:%v%v", redirURIPort, callbackPath)
-)
+// loginCmd represents the login command
+var loginCmd = &cobra.Command{
+	Use:   "login",
+	Short: "Opens the login page for email authentication",
+	Long:  `Email auth uses the JWT token to then generate the openpubkey for SSH`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("--Running Login----")
 
-var (
-	op = providers.GoogleOp{
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
-		Scopes:       scopes,
-		RedirURIPort: redirURIPort,
-		CallbackPath: callbackPath,
-		RedirectURI:  redirectURI,
-	}
-)
+		principals := []string{}
+		alg := jwa.ES256
+		signer, err := util.GenKeyPair(alg)
+		cobra.CheckErr(err)
+
+		opkClient, err := client.New(
+			&constants.Op,
+			client.WithSigner(signer, alg),
+			client.WithSignGQ(false),
+		)
+		cobra.CheckErr(err)
+
+		certBytes, seckeySshPem, err := createSSHCert(
+			context.Background(), opkClient, principals,
+		)
+		cobra.CheckErr(err)
+
+		cobra.CheckErr(writeKeysToSSHDir(seckeySshPem, certBytes))
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(loginCmd)
+}
 
 func createSSHCert(
 	cxt context.Context,
@@ -146,51 +158,4 @@ func writeKeysToSSHDir(seckeySshPem []byte, certBytes []byte) error {
 	}
 
 	return fmt.Errorf("no default ssh key file free for openpubkey")
-}
-
-// loginCmd represents the login command
-var loginCmd = &cobra.Command{
-	Use:   "login",
-	Short: "Opens the login page for email authentication",
-	Long:  `Email auth uses the JWT token to then generate the openpubkey for SSH`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("--Running Login----")
-		principals := []string{}
-		alg := jwa.ES256
-		signer, err := util.GenKeyPair(alg)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		opkClient, err := client.New(
-			&op,
-			client.WithSigner(signer, alg),
-			client.WithSignGQ(false),
-		)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		certBytes, seckeySshPem, err := createSSHCert(
-			context.Background(), opkClient, principals,
-		)
-		if err != nil {
-			fmt.Println(err)
-
-			os.Exit(1)
-		}
-
-		err = writeKeysToSSHDir(seckeySshPem, certBytes)
-		if err != nil {
-			fmt.Println(err)
-
-			os.Exit(1)
-		}
-		os.Exit(0)
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(loginCmd)	
 }
