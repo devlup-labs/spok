@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -147,19 +144,19 @@ var verifyCmd = &cobra.Command{
 	Use:   "verify",
 	Short: "Verifies OPK tokens",
 	Long: `
-	This function is called by the SSH server as the authorizedKeysCommand:
+This function is called by the SSH server as the authorizedKeysCommand:
 
-	The following lines are added to /etc/ssh/sshd_config:
+The following lines are added to /etc/ssh/sshd_config:
 
-	AuthorizedKeysCommand /etc/opk/opkssh ver %u %k %t
-	AuthorizedKeysCommandUser root
+AuthorizedKeysCommand /etc/opk/opkssh ver %u %k %t
+AuthorizedKeysCommandUser root
 
-	The parameters specified in the config map the parameters sent to the function below.
-	We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
+The parameters specified in the config map the parameters sent to the function below.
+We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 
-	%u The username (requested principal) - userArg
-	%t The public key type - typArg - in this case a certificate being used as a public key
-	%k The base64-encoded public key for authentication - certB64Arg - the public key is also a certificate
+%u The username (requested principal) - userArg
+%t The public key type - typArg - in this case a certificate being used as a public key
+%k The base64-encoded public key for authentication - certB64Arg - the public key is also a certificate
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("verify called")
