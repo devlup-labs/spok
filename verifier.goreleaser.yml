@@ -26,7 +26,7 @@ release:
   github:
     owner: devlup-labs
     name: sos
-  name_template: "{{.ProjectName}}-verifier-v{{.Version}}"
+  name_template: "{{.ProjectName}}-v{{.Version}}"
 
 archives:
   - format: binary
