@@ -22,3 +22,5 @@ go.work
 
 # Dotenv
 .env
+
+build/
