@@ -81,7 +81,6 @@ release:
   name_template: "{{.ProjectName}}-v{{.Version}}"
   extra_files:
     - glob: scripts/configure-sos-server.sh
-    - glob: */bin/verifier*
 
 aurs:
   - name: sos-bin
