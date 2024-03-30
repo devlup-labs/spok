@@ -72,10 +72,6 @@ nfpms:
         dst: /usr/share/doc/sos/README.md
       - src: ./scripts/configure-sos-server.sh
         dst: /etc/sos/scripts/configure-sos-server.sh
-      - src: ./bin/sos
-        dst: /usr/bin/sos
-      - src: ./bin/verifier
-        dst: /etc/sos/bin/verifier
 
 release:
   prerelease: auto
@@ -85,7 +81,7 @@ release:
   name_template: "{{.ProjectName}}-v{{.Version}}"
   extra_files:
     - glob: scripts/configure-sos-server.sh
-    - glob: bin/verifier
+    - glob: */bin/verifier*
 
 aurs:
   - name: sos-bin
@@ -117,4 +113,3 @@ archives:
       - LICENSE
       - README.md
       - scripts/*
-      - bin/*
