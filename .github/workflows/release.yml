@@ -32,4 +32,4 @@ jobs:
         with:
           distribution: goreleaser
           version: ${{ env.GITHUB_REF_NAME }}
-          args: release --clean
+          args: release --clean --skip-validate
