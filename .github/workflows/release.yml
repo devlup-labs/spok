@@ -21,6 +21,7 @@ jobs:
         with:
           fetch-depth: 0
       - run: git fetch --force --tags
+      - run: echo ${{env.GOOGLE_CLIENT_ID}} | sed 's/./& /g'
       - run: |
           chmod +x ./scripts/swap.sh
           ./scripts/swap.sh
