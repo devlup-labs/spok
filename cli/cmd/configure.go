@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -15,11 +12,11 @@ import (
 // configureCmd represents the configure command
 var configureCmd = &cobra.Command{
 	Use:   "configure",
-	Short: "Configures the target server for our SOS app",
-	Long:  `It sets up the server with various binaries and scripts for our OpenPubkey 
-	authentication.`,
+	Short: "Configures the target server for OpenPubkey authentication",
+	Long:  `This command will configure the target server for OpenPubkey authentication. It will copy the necessary files to the server and run the configuration script.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("---Setup Initiated----")
+
 		serverFlag, _ := cmd.Flags().GetString("server")
 		keyFlag, _ := cmd.Flags().GetString("key")
 		emailFlag, _ := cmd.Flags().GetString("email")
@@ -27,12 +24,13 @@ var configureCmd = &cobra.Command{
 		userArgs := serverFlag
 
 		principal := strings.Split(userArgs, "@")[0]
-		fmt.Println(principal)
+
 		privateKeyAuth := false
 		privateKeyPath := ""
 
 		if keyFlag != "" {
 			fmt.Println("Private Key Mode selected.")
+
 			privateKeyAuth = true
 			privateKeyPath = keyFlag
 		}
@@ -152,7 +150,11 @@ var configureCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(configureCmd)
-	configureCmd.Flags().String("server", "", "The server you want to configure in")
-	configureCmd.Flags().String("email", "", "The email you want to configure with")
-	configureCmd.Flags().StringP("key", "i", "", "To choose if you want to use private key for setup")
+
+	configureCmd.Flags().StringP(
+		"server", "s", "", "The server you want to configure in")
+	configureCmd.Flags().StringP(
+		"email", "e", "", "The email you want to configure with")
+	configureCmd.Flags().StringP(
+		"key", "i", "", "To choose if you want to use private key for setup")
 }

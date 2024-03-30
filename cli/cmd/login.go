@@ -27,6 +27,7 @@ var (
 	callbackPath = "/login-callback"
 	redirectURI  = fmt.Sprintf("http://localhost:%v%v", redirURIPort, callbackPath)
 )
+
 var (
 	op = providers.GoogleOp{
 		ClientID:     clientID,
