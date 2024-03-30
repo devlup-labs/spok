@@ -145,7 +145,7 @@ We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 		}
 
 		if len(os.Args) != 5 {
-			fmt.Println("Invalid number of arguments for verify, should be `verifier verify <User (TOKEN u)> <Cert (TOKEN k)> <Key type (TOKEN t)>`")
+			fmt.Println("Invalid number of arguments for verify, should be `verifier verify <User> <Cert> <Key type>`")
 
 			os.Exit(1)
 		}
