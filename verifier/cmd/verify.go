@@ -7,10 +7,10 @@ import (
 	"os"
 	"strings"
 
+	"github.com/devlup-labs/sos/internal/pkg/constants"
 	"github.com/devlup-labs/sos/internal/pkg/policy"
 	"github.com/devlup-labs/sos/internal/pkg/sshcert"
 	"github.com/devlup-labs/sos/openpubkey/client"
-	"github.com/devlup-labs/sos/openpubkey/client/providers"
 	"github.com/devlup-labs/sos/openpubkey/pktoken"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
@@ -118,27 +118,6 @@ func Log(line string) {
 	}
 }
 
-var (
-	clientID = "992028499768-ce9juclb3vvckh23r83fjkmvf1lvjq18.apps.googleusercontent.com"
-	// The clientSecret was intentionally checked in. It holds no power and is used for development. Do not report as a security issue
-	clientSecret = "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" // Google requires a ClientSecret even if this a public OIDC App
-	scopes       = []string{"openid profile email"}
-	redirURIPort = "3000"
-	callbackPath = "/login-callback"
-	redirectURI  = fmt.Sprintf("http://localhost:%v%v", redirURIPort, callbackPath)
-)
-
-var (
-	op = providers.GoogleOp{
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
-		Scopes:       scopes,
-		RedirURIPort: redirURIPort,
-		CallbackPath: callbackPath,
-		RedirectURI:  redirectURI,
-	}
-)
-
 // verifyCmd represents the verify command
 var verifyCmd = &cobra.Command{
 	Use:   "verify",
@@ -159,8 +138,6 @@ We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 %k The base64-encoded public key for authentication - certB64Arg - the public key is also a certificate
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("verify called")
-
 		Log(strings.Join(os.Args, " "))
 
 		policyEnforcer := simpleFilePolicyEnforcer{
@@ -178,17 +155,15 @@ We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 		typArg := os.Args[4]
 
 		authKey, err := authorizedKeysCommand(
-			userArg, typArg, certB64Arg, policyEnforcer.checkPolicy, &op,
+			userArg,
+			typArg,
+			certB64Arg,
+			policyEnforcer.checkPolicy,
+			&constants.Op,
 		)
-		if err != nil {
-			Log(fmt.Sprint(err))
+		cobra.CheckErr(err)
 
-			os.Exit(1)
-		} else {
-			fmt.Println(authKey)
-		}
-		os.Exit(0)
-
+		fmt.Println(authKey)
 	},
 }
 
