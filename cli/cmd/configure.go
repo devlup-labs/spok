@@ -45,14 +45,14 @@ var configureCmd = &cobra.Command{
 				"scp",
 				"-i",
 				privateKeyPath,
-				"scripts/configure-sos-server.sh",
+				"/etc/sos/scripts/configure-sos-server.sh",
 				userArgs + ":/root/configure-sos-server.sh",
 			}
 			scpCommandVerifier = []string{
 				"scp",
 				"-i",
 				privateKeyPath,
-				"verifier/verifier",
+				"/etc/sos/bin/verifier",
 				userArgs + ":/root/verifier",
 			}
 			sshCommandChmod = []string{
@@ -76,12 +76,12 @@ var configureCmd = &cobra.Command{
 		} else {
 			scpCommandScript = []string{
 				"scp",
-				"scripts/configure-sos-server.sh",
+				"/etc/sos/scripts/configure-sos-server.sh",
 				userArgs + ":/root/configure-sos-server.sh",
 			}
 			scpCommandVerifier = []string{
 				"scp",
-				"verifier/verifier",
+				"/etc/sos/bin/verifier",
 				userArgs + ":/root/verifier",
 			}
 			sshCommandChmod = []string{
