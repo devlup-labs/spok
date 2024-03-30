@@ -8,8 +8,8 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "verifier",
-	Short: "A verifier for the comparing the key for SSH",
-	Long: `A verifier for the comparing the key for SSH and adding users.`,
+	Short: "A verifier for comparing the key for SSH",
+	Long: `A verifier for comparing the key for SSH and adding users.`,
 }
 
 func Execute() {
