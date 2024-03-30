@@ -1,0 +1,35 @@
+builds:
+  - main: ./verifier
+    id: "verifier"
+    binary: ./bin/verifier
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+      - >-
+        {{- if eq .Os "darwin" }}
+          {{- if eq .Arch "amd64"}}CC=o64-clang{{- end }}
+          {{- if eq .Arch "arm64"}}CC=aarch64-apple-darwin20.2-clang{{- end }}
+        {{- end }}
+        {{- if eq .Os "windows" }}
+          {{- if eq .Arch "amd64" }}CC=x86_64-w64-mingw32-gcc{{- end }}
+        {{- end }}
+    flags:
+      - -mod=vendor
+
+release:
+  prerelease: auto
+  github:
+    owner: devlup-labs
+    name: sos
+  name_template: "{{.ProjectName}}-v{{.Version}}"
+
+archives:
+  - format: binary
+    builds_info:
+      mode: 0755
+    wrap_in_directory: false
