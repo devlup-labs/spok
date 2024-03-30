@@ -11,17 +11,19 @@ permissions:
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
+      AUR_KEY: ${{ secrets.AUR_KEY }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
     steps:
-      - uses: actions/checkout@v3
-      - name: Swap values
-        run: |
-          chmod +x ./scripts/swap.sh
-          ./scripts/swap.sh
-
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - run: git fetch --force --tags
+      - run: |
+          chmod +x ./scripts/swap.sh
+          ./scripts/swap.sh
       - uses: actions/setup-go@v3
         with:
           go-version: ">=1.20.2"
@@ -31,8 +33,3 @@ jobs:
           distribution: goreleaser
           version: ${{ env.GITHUB_REF_NAME }}
           args: release --clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
-          AUR_KEY: ${{ secrets.AUR_KEY }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
