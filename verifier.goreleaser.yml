@@ -27,5 +27,3 @@ release:
     owner: devlup-labs
     name: sos
   name_template: "{{.ProjectName}}-verifier-v{{.Version}}"
-  release_assets:
-      - glob: bin/verifier*
