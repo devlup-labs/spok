@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
 	"log"
 	"os/exec"
+	"runtime"
 	"strings"
-
-	"github.com/spf13/cobra"
 )
 
 // configureCmd represents the configure command
@@ -28,11 +28,20 @@ var configureCmd = &cobra.Command{
 		privateKeyAuth := false
 		privateKeyPath := ""
 
+		runtime_present := runtime.GOOS
+
 		if keyFlag != "" {
 			fmt.Println("Private Key Mode selected.")
 
 			privateKeyAuth = true
 			privateKeyPath = keyFlag
+		}
+		var runtime_path string
+
+		if runtime_present == "windows"{
+			runtime_path = "C:/ProgramData/SOS"
+		}else{
+			runtime_path = "/etc/sos"
 		}
 
 		var scpCommandScript []string
@@ -45,14 +54,14 @@ var configureCmd = &cobra.Command{
 				"scp",
 				"-i",
 				privateKeyPath,
-				"scripts/configure-sos-server.sh",
+				fmt.Sprintf("%s/scripts/configure-sos-server.sh", runtime_path),
 				userArgs + ":/root/configure-sos-server.sh",
 			}
 			scpCommandVerifier = []string{
 				"scp",
 				"-i",
 				privateKeyPath,
-				"verifier/verifier",
+				fmt.Sprintf("%s/bin/verifier", runtime_path),
 				userArgs + ":/root/verifier",
 			}
 			sshCommandChmod = []string{
@@ -76,12 +85,12 @@ var configureCmd = &cobra.Command{
 		} else {
 			scpCommandScript = []string{
 				"scp",
-				"scripts/configure-sos-server.sh",
+				fmt.Sprintf("%s/scripts/configure-sos-server.sh", runtime_path),
 				userArgs + ":/root/configure-sos-server.sh",
 			}
 			scpCommandVerifier = []string{
 				"scp",
-				"verifier/verifier",
+				fmt.Sprintf("%s/bin/verifier", runtime_path),
 				userArgs + ":/root/verifier",
 			}
 			sshCommandChmod = []string{

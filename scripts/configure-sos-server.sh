@@ -2,6 +2,22 @@
 EMAIL="$1"
 USER="$2"
 
+ARCH=$(uname -m)
+OS=$(uname -os)
+
+OS_VAL=$(echo "$OS" | cut -d ' ' -f 1)
+
+if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
+    wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
+elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
+    wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_arm64
+elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
+    wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
+elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
+    wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
+else 
+    echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
+fi
 # Validate input arguments
 if [ -z "${EMAIL}" ] || [ -z "${USER}" ]; then
     echo "Usage: $0 <EMAIL> <USER>"
