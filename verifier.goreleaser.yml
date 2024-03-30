@@ -27,3 +27,9 @@ release:
     owner: devlup-labs
     name: sos
   name_template: "{{.ProjectName}}-verifier-v{{.Version}}"
+
+archives:
+  format: binary
+  builds_info:
+   mode: 0755
+  wrap_in_directory: false
