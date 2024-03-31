@@ -5,6 +5,8 @@ USER="$2"
 ARCH=$(uname -m)
 OS=$(uname -os)
 
+OS_VAL=$(echo "$OS" | cut -d ' ' -f 1)
+
 # Validate input arguments
 if [ -z "${EMAIL}" ] || [ -z "${USER}" ]; then
     echo "Usage: $0 <EMAIL> <USER>"
@@ -13,7 +15,6 @@ fi
 
 if sudo -nl &> /dev/null || $(id -u) -ne 0; then
     echo "User has sudo privileges without a password."
-
 
     if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
         wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
