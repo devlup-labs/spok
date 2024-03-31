@@ -1,4 +1,4 @@
-# Secure Openpubkey Shell (SOS)
+# Secure Openpubkey Shell (SOS) (v0.1.0)
 
 ## Steps to setup SOS on your server:
 
