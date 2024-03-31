@@ -38,14 +38,13 @@ var configureCmd = &cobra.Command{
 		}
 		var runtime_path string
 
-		if runtime_present == "windows"{
+		if runtime_present == "windows" {
 			runtime_path = "C:/ProgramData/SOS"
-		}else{
+		} else {
 			runtime_path = "/etc/sos"
 		}
 
 		var scpCommandScript []string
-		var scpCommandVerifier []string
 		var sshCommandChmod []string
 		var sshCommandConfigure []string
 
@@ -56,13 +55,6 @@ var configureCmd = &cobra.Command{
 				privateKeyPath,
 				fmt.Sprintf("%s/scripts/configure-sos-server.sh", runtime_path),
 				userArgs + ":/root/configure-sos-server.sh",
-			}
-			scpCommandVerifier = []string{
-				"scp",
-				"-i",
-				privateKeyPath,
-				fmt.Sprintf("%s/bin/verifier", runtime_path),
-				userArgs + ":/root/verifier",
 			}
 			sshCommandChmod = []string{
 				"ssh",
@@ -88,11 +80,6 @@ var configureCmd = &cobra.Command{
 				fmt.Sprintf("%s/scripts/configure-sos-server.sh", runtime_path),
 				userArgs + ":/root/configure-sos-server.sh",
 			}
-			scpCommandVerifier = []string{
-				"scp",
-				fmt.Sprintf("%s/bin/verifier", runtime_path),
-				userArgs + ":/root/verifier",
-			}
 			sshCommandChmod = []string{
 				"ssh",
 				userArgs,
@@ -116,17 +103,6 @@ var configureCmd = &cobra.Command{
 		fmt.Println("Copying configuration script to server...")
 
 		err := scpCmdScript.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		scpCmdVerifier := exec.Command(
-			scpCommandVerifier[0], scpCommandVerifier[1:]...,
-		)
-
-		fmt.Println("Copying verifier to server...")
-
-		err = scpCmdVerifier.Run()
 		if err != nil {
 			log.Fatal(err)
 		}
