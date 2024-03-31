@@ -26,7 +26,20 @@ fi
 
 if sudo -nl &> /dev/null || $(id -u) -ne 0; then
     echo "User has sudo privileges without a password."
-    # Create the default sos directory
+
+
+    if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
+        wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
+    elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
+        wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_arm64
+    elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
+        wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
+    elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
+        wget -o /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
+    else 
+        echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
+    fi
+        # Create the default sos directory
     sudo mkdir -p /etc/sos
 
     # Install the sos verifier
@@ -59,8 +72,18 @@ else
 
     mkdir ~/.sos
 
+    if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
+        wget -o ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
+    elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
+        wget -o ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_arm64
+    elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
+        wget -o ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
+    elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
+        wget -o ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
+    else 
+        echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
+    fi
     # Install the verifier client to user's home directory
-    mv verifier ~/.sos
     chmod 700 ~/.sos/verifier
 
     # Create a personal policy yaml file in user's home directory
