@@ -2,40 +2,32 @@
 
 ## Steps to setup SOS on your server:
 
-1. Clone the repository:
+## For Arch Users:
+
+1. Download the AUR package for SOS:
+(You can install with your favourite AUR helper)
 
 ```bash
-git clone https://github.com/devlup-labs/sos.git
+yay -S sos-bin
 ```
 
-2. Add your Oauth credentials in `cli/cli.go` and `verifier/cli.go` in place of the dummy credentials.
-
-3. Build your verifier.
-```bash
-go build -o verifier ./verifier/
-```
-
-4. To configure the server with your email id. (Note: you will need to enter the password approximately 4 times.)
+2. Now, you can configure your server by typing the following commands
 
 ```bash
-go run cli/cli.go configure <email> <user>@<server-ip>
+sos configure -s <user>@<server-ip> -e <email-id>
+```
+(Optional in case of private keys)
+```bash
+sos configure -i <pvt_key_path> -s <user>@<server-ip> -e <email-id> 
 ```
 
-4. (Optional) in case you want to configure a server with private key.  
+3. Now you can login with your email account
 
 ```bash
-go run cli/cli.go configure <email> <user>@<server-ip> -i <pvt_key>
+sos login
 ```
 
-5. Login to your gmail to generate your open pubkey.
-
+4. Now you can SSH passwordless in your server
 ```bash
-go run cli/cli.go login
+ssh <principal>@<server-ip> 
 ```
-
-6. (Optional in some cases) Run to add the ssh key.
-```bash
-ssh-add
-```
-
-Now you should be able to ssh into your server passwordless.
