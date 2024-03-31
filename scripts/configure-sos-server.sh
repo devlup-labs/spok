@@ -17,22 +17,26 @@ if sudo -nl &> /dev/null || $(id -u) -ne 0; then
     echo "User has sudo privileges without a password."
 
     if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
-        wget -O /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
+        mv verifier_0.1.0_linux_amd64 verifier
     elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
-        wget -O /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_arm64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_arm64
+        mv verifier_0.1.0_linux_arm64 verifier
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
-        wget -O /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
+        mv verifier_0.1.0_darwin_amd64 verifier
     elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
-        wget -O /root/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
+        mv verifier_0.1.0_darwin_arm64 verifier
     else 
-        echO "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
+        echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
     fi
 
     # Create the default sOs directory
     sudo mkdir -p /etc/sos
 
     # Install the sos verifier
-    sudo mv verifier /etc/sos
+    sudo mv verifier /etc/sos/
     sudo chown root /etc/sos/verifier
     sudo chmod 700 /etc/sos/verifier
 
@@ -62,17 +66,22 @@ else
     mkdir ~/.sos
 
     if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
-        wget -O ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_amd64
+        mv verifier_0.1.0_linux_amd64 verifier
     elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
-        wget -O ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_arm64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_linux_arm64
+        mv verifier_0.1.0_linux_arm64 verifier
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
-        wget -O ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
+        mv verifier_0.1.0_darwin_amd64 verifier
     elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
-        wget -O ~/.sos/verifier https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
+        wget https://github.com/devlup-labs/sos/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
+        mv verifier_0.1.0_darwin_arm64 verifier
     else 
         echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
     fi
 
+    mv verifier ~/.sos/verifier
     # Install the verifier client to user's home directory
     chmod 700 ~/.sos/verifier
 
