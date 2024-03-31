@@ -13,14 +13,14 @@ var addCmd = &cobra.Command{
 	Short: "Adds user to the policy.yaml file",
 	Long:  `Adds user to the policy structure maintained in the server by our SOS.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(os.Args) != 4 {
+		if len(args) != 2 {
 			fmt.Println("Invalid number of arguments for add, should be `verifier add <Email> <User>`")
 
 			os.Exit(1)
 		}
 
-		emailArgs := os.Args[2]
-		userArgs := os.Args[3]
+		emailArgs := args[0]
+		userArgs := args[1]
 
 		policy.AddPolicy(emailArgs, userArgs)
 	},

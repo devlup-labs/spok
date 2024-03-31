@@ -194,5 +194,4 @@ func RemovePolicy(email string, principal string) {
 		fmt.Println(err)
 		return
 	}
-
 }

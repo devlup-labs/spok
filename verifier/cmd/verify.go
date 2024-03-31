@@ -138,21 +138,21 @@ We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 %k The base64-encoded public key for authentication - certB64Arg - the public key is also a certificate
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		Log(strings.Join(os.Args, " "))
+		Log(strings.Join(args, " "))
 
 		policyEnforcer := simpleFilePolicyEnforcer{
 			PolicyFilePath: "/etc/sos/policy.yml",
 		}
 
-		if len(os.Args) != 5 {
+		if len(args) != 3 {
 			fmt.Println("Invalid number of arguments for verify, should be `verifier verify <User> <Cert> <Key type>`")
 
 			os.Exit(1)
 		}
 
-		userArg := os.Args[2]
-		certB64Arg := os.Args[3]
-		typArg := os.Args[4]
+		userArg := args[0]
+		certB64Arg := args[1]
+		typArg := args[2]
 
 		authKey, err := authorizedKeysCommand(
 			userArg,
