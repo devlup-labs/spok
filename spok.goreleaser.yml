@@ -57,6 +57,7 @@ release:
 aurs:
   - name: spok-bin
     homepage: https://github.com/devlup-labs/spok
+    description: Sans Password or Key (SPoK) - An easier way for remote server authentication
     license: MIT
     maintainers:
       - "Saahil Bhavsar <saahil_bhavsar@outlook.com>"
