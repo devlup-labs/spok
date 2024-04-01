@@ -38,12 +38,3 @@ jobs:
           distribution: goreleaser
           version: ${{ env.GITHUB_REF_NAME }}
           args: release --clean --skip=validate --config=verifier.goreleaser.yml
-
-      - name: Upload package PackageCloud.io
-        uses: danielmundi/upload-packagecloud@v1
-        with:
-          packagecloud-token: ${{ secrets.PACKAGECLOUD_TOKEN }}
-          packagecloud-username: "SaahilNotSahil"
-          packagecloud-repo: "spok"
-          package-name: dist/spok_0.1.0_linux_amd64.deb
-          packagecloud-distrib: any/any
