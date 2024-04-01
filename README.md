@@ -1,5 +1,5 @@
 # SPoK - Sans Password or Key (v0.1.0)
-An easier way for remote server authentication.
+An easier way for remote server authentication. Powered bv [OpenPubkey](https://github.com/openpubkey/openpubkey).
 
 ## Installation
 
