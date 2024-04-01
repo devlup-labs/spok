@@ -49,4 +49,4 @@ spok login
 ssh <principal>@<server-ip>
 ```
 
-#### Note: Currently works only with Gmail accounts.
+### Note: Currently works only with Gmail accounts.
