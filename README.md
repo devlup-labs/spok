@@ -12,6 +12,15 @@ An easier way for remote server authentication. Powered bv [OpenPubkey](https://
 yay -S spok-bin
 ```
 
+### For Ubuntu/Debian Users:
+
+- You can install by running the following commands
+```bash
+curl -s https://packagecloud.io/install/repositories/SaahilNotSahil/spok/script.deb.sh?any=true | sudo bash
+sudo apt update
+sudo apt install spok
+```
+
 ### Coming soon for other Operation Systems :)
 
 ## Setup
