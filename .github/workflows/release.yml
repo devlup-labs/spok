@@ -45,5 +45,5 @@ jobs:
           packagecloud-token: ${{ secrets.PACKAGECLOUD_TOKEN }}
           packagecloud-username: "SaahilNotSahil"
           packagecloud-repo: "spok"
-          package-name: dist/spok_${{ env.GITHUB_REF_NAME }}_linux_*.deb
+          package-name: dist/*.deb
           packagecloud-distrib: any/any
