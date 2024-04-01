@@ -8,8 +8,8 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 # Define directories
 $binDir = "bin"
 $configDir = "scripts"
-$installDir = "C:\Program Files\SOS"
-$configInstallDir = "C:\ProgramData\SOS"
+$installDir = "C:\Program Files\SPoK"
+$configInstallDir = "C:\ProgramData\SPoK"
 
 # Create installation directories if they don't exist
 if (-Not (Test-Path $installDir)) {
@@ -21,8 +21,8 @@ if (-Not (Test-Path $configInstallDir)) {
 }
 
 # Copy binaries
-Copy-Item -Path "$binDir\sos.exe" -Destination $installDir -Force
-Copy-Item -Path "$configDir\configure-sos-server.sh" -Destination $configInstallDir -Force
+Copy-Item -Path "$binDir\spok.exe" -Destination $installDir -Force
+Copy-Item -Path "$configDir\configure-spok-server.sh" -Destination $configInstallDir -Force
 Copy-Item -Path ".\README.md" -Destination $configInstallDir -Force
 Copy-Item -Path ".\LICENSE" -Destination $configInstallDir -Force
 
@@ -32,4 +32,4 @@ if (-Not ($envPath -like "*$installDir*")) {
     [Environment]::SetEnvironmentVariable("Path", $envPath + ";$installDir", [EnvironmentVariableTarget]::Machine)
 }
 
-Write-Host "Installation of SOS completed successfully!"
+Write-Host "Installation of SPoK completed successfully!"

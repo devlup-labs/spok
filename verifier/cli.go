@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/devlup-labs/sos/verifier/cmd"
+	"github.com/devlup-labs/spok/verifier/cmd"
 )
 
 func main() {

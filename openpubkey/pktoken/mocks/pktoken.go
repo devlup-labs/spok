@@ -20,9 +20,9 @@ import (
 	"context"
 	"crypto"
 
-	"github.com/devlup-labs/sos/openpubkey/client/providers"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
-	"github.com/devlup-labs/sos/openpubkey/pktoken/clientinstance"
+	"github.com/devlup-labs/spok/openpubkey/client/providers"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/pktoken/clientinstance"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwk"
 )

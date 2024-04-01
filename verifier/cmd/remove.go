@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/devlup-labs/sos/internal/pkg/policy"
+	"github.com/devlup-labs/spok/internal/pkg/policy"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +12,7 @@ import (
 var removeCmd = &cobra.Command{
 	Use:   "remove",
 	Short: "Removes user and principles from the policy.yaml file",
-	Long: `Removes the user and principles from the policy.yaml file maintained by SOS.`,
+	Long:  `Removes the user and principles from the policy.yaml file maintained by SOS.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 2 {
 			fmt.Println("Invalid number of arguments for remove, should be `verifier remove <Email> <User>`")

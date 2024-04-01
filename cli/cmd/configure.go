@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"log"
 	"os/exec"
 	"runtime"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 // configureCmd represents the configure command
@@ -39,9 +40,9 @@ var configureCmd = &cobra.Command{
 		var runtime_path string
 
 		if runtime_present == "windows" {
-			runtime_path = "C:/ProgramData/SOS"
+			runtime_path = "C:/ProgramData/SPoK"
 		} else {
-			runtime_path = "/etc/sos"
+			runtime_path = "/etc/spok"
 		}
 
 		var scpCommandScript []string
@@ -53,8 +54,8 @@ var configureCmd = &cobra.Command{
 				"scp",
 				"-i",
 				privateKeyPath,
-				fmt.Sprintf("%s/scripts/configure-sos-server.sh", runtime_path),
-				userArgs + ":/root/configure-sos-server.sh",
+				fmt.Sprintf("%s/scripts/configure-spok-server.sh", runtime_path),
+				userArgs + ":/root/configure-spok-server.sh",
 			}
 			sshCommandChmod = []string{
 				"ssh",
@@ -63,34 +64,34 @@ var configureCmd = &cobra.Command{
 				userArgs,
 				"chmod",
 				"+x",
-				"/root/configure-sos-server.sh",
+				"/root/configure-spok-server.sh",
 			}
 			sshCommandConfigure = []string{
 				"ssh",
 				"-i",
 				privateKeyPath,
 				userArgs,
-				"/root/configure-sos-server.sh",
+				"/root/configure-spok-server.sh",
 				emailArgs,
 				principal,
 			}
 		} else {
 			scpCommandScript = []string{
 				"scp",
-				fmt.Sprintf("%s/scripts/configure-sos-server.sh", runtime_path),
-				userArgs + ":/root/configure-sos-server.sh",
+				fmt.Sprintf("%s/scripts/configure-spok-server.sh", runtime_path),
+				userArgs + ":/root/configure-spok-server.sh",
 			}
 			sshCommandChmod = []string{
 				"ssh",
 				userArgs,
 				"chmod",
 				"+x",
-				"/root/configure-sos-server.sh",
+				"/root/configure-spok-server.sh",
 			}
 			sshCommandConfigure = []string{
 				"ssh",
 				userArgs,
-				"/root/configure-sos-server.sh",
+				"/root/configure-spok-server.sh",
 				emailArgs,
 				principal,
 			}
@@ -122,14 +123,14 @@ var configureCmd = &cobra.Command{
 			sshCommandConfigure[0], sshCommandConfigure[1:]...,
 		)
 
-		fmt.Println("Configuring SOS server...")
+		fmt.Println("Configuring SPoK server...")
 
 		err = sshCmdConfigure.Run()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Println("Configured SOS server for:", emailArgs)
+		fmt.Println("Configured SPoK server for:", emailArgs)
 	},
 }
 

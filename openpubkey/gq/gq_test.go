@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jws"
-	"github.com/devlup-labs/sos/openpubkey/util"
 )
 
 func TestSignVerifyJWT(t *testing.T) {

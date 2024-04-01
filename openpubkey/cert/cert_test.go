@@ -23,9 +23,9 @@ import (
 	"encoding/pem"
 	"testing"
 
-	"github.com/devlup-labs/sos/openpubkey/client"
-	"github.com/devlup-labs/sos/openpubkey/client/providers"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/client"
+	"github.com/devlup-labs/spok/openpubkey/client/providers"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/stretchr/testify/require"
 )

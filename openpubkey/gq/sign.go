@@ -7,8 +7,8 @@ import (
 
 	"filippo.io/bigmod"
 	"github.com/awnumar/memguard"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jws"
-	"github.com/devlup-labs/sos/openpubkey/util"
 )
 
 // Sign creates a GQ1 signature over the given message with the given GQ1 private number.

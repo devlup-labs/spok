@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"filippo.io/bigmod"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/util"
 )
 
 // The test vector specifies hex values for each of the signature scheme's data

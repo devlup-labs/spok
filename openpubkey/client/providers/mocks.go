@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/awnumar/memguard"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jws"
 	"github.com/lestrrat-go/jwx/v2/jwt"

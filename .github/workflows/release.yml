@@ -32,7 +32,7 @@ jobs:
         with:
           distribution: goreleaser
           version: ${{ env.GITHUB_REF_NAME }}
-          args: release --clean --skip=validate --config=sos.goreleaser.yml
+          args: release --clean --skip=validate --config=spok.goreleaser.yml
       - uses: goreleaser/goreleaser-action@v4
         with:
           distribution: goreleaser

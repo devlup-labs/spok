@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jws"
-	"github.com/devlup-labs/sos/openpubkey/util"
 )
 
 // Verify verifies a GQ1 signature over a message, using the public identity of the signer.

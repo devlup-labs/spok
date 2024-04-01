@@ -19,7 +19,7 @@ package pktoken
 import (
 	"context"
 
-	"github.com/devlup-labs/sos/openpubkey/pktoken/clientinstance"
+	"github.com/devlup-labs/spok/openpubkey/pktoken/clientinstance"
 	"github.com/lestrrat-go/jwx/v2/jws"
 )
 

@@ -22,12 +22,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/devlup-labs/sos/openpubkey/client"
-	"github.com/devlup-labs/sos/openpubkey/cosigner"
-	cosmock "github.com/devlup-labs/sos/openpubkey/cosigner/mocks"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
-	"github.com/devlup-labs/sos/openpubkey/pktoken/mocks"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/client"
+	"github.com/devlup-labs/spok/openpubkey/cosigner"
+	cosmock "github.com/devlup-labs/spok/openpubkey/cosigner/mocks"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/pktoken/mocks"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/stretchr/testify/require"
 )

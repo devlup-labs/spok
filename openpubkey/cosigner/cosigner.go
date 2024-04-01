@@ -20,7 +20,7 @@ import (
 	"crypto"
 	"encoding/json"
 
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 )
 

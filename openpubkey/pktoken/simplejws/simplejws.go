@@ -21,7 +21,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/util"
 )
 
 type Jws struct {

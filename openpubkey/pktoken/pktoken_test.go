@@ -24,14 +24,14 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
-	"github.com/devlup-labs/sos/openpubkey/pktoken/mocks"
-	"github.com/devlup-labs/sos/openpubkey/pktoken/simplejws"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/pktoken/mocks"
+	"github.com/devlup-labs/spok/openpubkey/pktoken/simplejws"
 
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwk"
 
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/util"
 )
 
 func TestPkToken(t *testing.T) {

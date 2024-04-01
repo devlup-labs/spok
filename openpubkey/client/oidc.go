@@ -26,9 +26,9 @@ import (
 	"strings"
 
 	"github.com/awnumar/memguard"
-	"github.com/devlup-labs/sos/openpubkey/gq"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/gq"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jws"
@@ -129,7 +129,7 @@ func (v PKTokenVerifier) Verify(ctx context.Context, pkt *pktoken.PKToken) error
 	// issuer and then verify using that provider. If that provider has the
 	// wrong audience it will throw an error even if there was a provider in
 	// the allowlist that had both the correct audience and the correct issuer.
-	// See https://github.com/devlup-labs/sos/openpubkey/issues/84
+	// See https://github.com/devlup-labs/spok/openpubkey/issues/84
 	var provider OpenIdProvider
 	for _, allowedOp := range v.AllowedProviders {
 		if allowedOp.Issuer() == pktOp.Issuer {

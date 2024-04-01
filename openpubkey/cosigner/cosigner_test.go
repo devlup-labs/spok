@@ -20,9 +20,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
-	"github.com/devlup-labs/sos/openpubkey/pktoken/mocks"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/pktoken/mocks"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/stretchr/testify/require"
 )

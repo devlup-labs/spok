@@ -25,8 +25,8 @@ import (
 	"time"
 
 	"github.com/awnumar/memguard"
-	"github.com/devlup-labs/sos/openpubkey/client"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/client"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/google/uuid"
 	"github.com/lestrrat-go/jwx/v2/jws"
 	"github.com/sirupsen/logrus"

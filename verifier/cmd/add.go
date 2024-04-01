@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/devlup-labs/sos/internal/pkg/policy"
+	"github.com/devlup-labs/spok/internal/pkg/policy"
 	"github.com/spf13/cobra"
 )
 

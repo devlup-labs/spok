@@ -1,33 +1,43 @@
-# Secure Openpubkey Shell (SOS) (v0.1.0)
+# SPoK - Sans Password or Key (v0.1.0)
+An easier way for remote server authentication.
 
-## Steps to setup SOS on your server:
+## Installation
 
-## For Arch Users:
+### For Arch Users:
 
-1. Download the AUR package for SOS:
-(You can install with your favourite AUR helper)
-
-```bash
-yay -S sos-bin
-```
-
-2. Now, you can configure your server by typing the following commands
+- Download the AUR package for SPoK:
+   (You can install it with your favourite AUR helper)
 
 ```bash
-sos configure -s <user>@<server-ip> -e <email-id>
-```
-(Optional in case of private keys)
-```bash
-sos configure -i <pvt_key_path> -s <user>@<server-ip> -e <email-id> 
+yay -S spok-bin
 ```
 
-3. Now you can login with your email account
+### Coming soon for other Operation Systems :)
+
+## Setup
+
+1. Configure your server by typing the following commands
 
 ```bash
-sos login
+spok configure -s <user>@<server-ip> -e <email-id>
 ```
 
-4. Now you can SSH passwordless in your server
+(Optional in case of key-pair authentication)
+
 ```bash
-ssh <principal>@<server-ip> 
+spok configure -i <pvt_key_path> -s <user>@<server-ip> -e <email-id>
 ```
+
+2. Now you can login with your email account
+
+```bash
+spok login
+```
+
+3. Now you can SSH passwordless in your server
+
+```bash
+ssh <principal>@<server-ip>
+```
+
+#### Note: Currently works only with Gmail accounts.

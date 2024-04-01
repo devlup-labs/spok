@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
 )
 
 type AuthState struct {

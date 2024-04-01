@@ -11,7 +11,7 @@ import (
 	"os"
 
 	"github.com/awnumar/memguard"
-	"github.com/devlup-labs/sos/openpubkey/client"
+	"github.com/devlup-labs/spok/openpubkey/client"
 	"github.com/lestrrat-go/jwx/v2/jws"
 )
 

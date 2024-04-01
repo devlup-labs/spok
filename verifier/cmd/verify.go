@@ -7,11 +7,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/devlup-labs/sos/internal/pkg/constants"
-	"github.com/devlup-labs/sos/internal/pkg/policy"
-	"github.com/devlup-labs/sos/internal/pkg/sshcert"
-	"github.com/devlup-labs/sos/openpubkey/client"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/internal/pkg/constants"
+	"github.com/devlup-labs/spok/internal/pkg/policy"
+	"github.com/devlup-labs/spok/internal/pkg/sshcert"
+	"github.com/devlup-labs/spok/openpubkey/client"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/exp/slices"
@@ -37,7 +37,7 @@ func (p *simpleFilePolicyEnforcer) readPolicyFile() (*policy.Policy, error) {
 	}
 
 	allowedPolicy := new(policy.Policy)
-	err = allowedPolicy.Unmarshal("/etc/sos/policy.yml")
+	err = allowedPolicy.Unmarshal("/etc/spok/policy.yml")
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func authorizedKeysCommand(
 
 func Log(line string) {
 	f, err := os.OpenFile(
-		"/var/log/sos.log", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0700,
+		"/var/log/spok.log", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0700,
 	)
 	if err != nil {
 		fmt.Println("Couldn't write to file")
@@ -127,7 +127,7 @@ This command is called by the SSH server as the authorizedKeysCommand:
 
 The following lines are added to /etc/ssh/sshd_config:
 
-AuthorizedKeysCommand /etc/opk/opkssh ver %u %k %t
+AuthorizedKeysCommand /etc/spok/verifier verify %u %k %t
 AuthorizedKeysCommandUser root
 
 The parameters specified in the config map the parameters sent to the function below.
@@ -141,7 +141,7 @@ We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 		Log(strings.Join(args, " "))
 
 		policyEnforcer := simpleFilePolicyEnforcer{
-			PolicyFilePath: "/etc/sos/policy.yml",
+			PolicyFilePath: "/etc/spok/policy.yml",
 		}
 
 		if len(args) != 3 {

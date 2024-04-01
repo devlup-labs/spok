@@ -28,8 +28,8 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/devlup-labs/sos/openpubkey/client"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/client"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
 )
 
 // CreateX509Cert generates a self-signed x509 cert from a PK token

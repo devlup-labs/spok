@@ -1,7 +1,7 @@
 builds:
   - main: ./cli
     id: "cli"
-    binary: ./bin/sos
+    binary: ./bin/spok
     goos:
       - linux
       - windows
@@ -29,9 +29,9 @@ checksum:
   name_template: "checksums.txt"
 
 nfpms:
-  - package_name: sos-bin
+  - package_name: spok
     vendor: devlup-labs
-    homepage: https://github.com/devlup-labs/sos
+    homepage: https://github.com/devlup-labs/spok
     maintainer: Saahil Bhavsar <saahil_bhavsar@outlook.com>
     license: MIT
     formats:
@@ -41,22 +41,22 @@ nfpms:
     bindir: /usr
     contents:
       - src: LICENSE
-        dst: /usr/share/licenses/sos/LICENSE
+        dst: /usr/share/licenses/spok/LICENSE
       - src: README.md
-        dst: /usr/share/doc/sos/README.md
-      - src: ./scripts/configure-sos-server.sh
-        dst: /etc/sos/scripts/configure-sos-server.sh
+        dst: /usr/share/doc/spok/README.md
+      - src: ./scripts/configure-spok-server.sh
+        dst: /etc/spok/scripts/configure-spok-server.sh
 
 release:
   prerelease: auto
   github:
     owner: devlup-labs
-    name: sos
+    name: spok
   name_template: "{{.ProjectName}}-v{{.Version}}"
 
 aurs:
-  - name: sos-bin
-    homepage: https://github.com/devlup-labs/sos
+  - name: spok-bin
+    homepage: https://github.com/devlup-labs/spok
     license: MIT
     maintainers:
       - "Saahil Bhavsar <saahil_bhavsar@outlook.com>"
@@ -67,12 +67,12 @@ aurs:
       name: SaahilNotSahil
       email: saahil_bhavsar@outlook.com
     private_key: "{{ .Env.AUR_KEY }}"
-    git_url: "ssh://aur@aur.archlinux.org/sos-bin.git"
+    git_url: "ssh://aur@aur.archlinux.org/spok-bin.git"
     package: |-
-      install -Dm755 "./bin/sos" "${pkgdir}/usr/bin/sos"
-      install -Dm755 "./scripts/configure-sos-server.sh" "${pkgdir}/etc/sos/scripts/configure-sos-server.sh"
-      install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/sos/LICENSE"
-      install -Dm644 "./README.md" "${pkgdir}/usr/share/doc/sos/README.md"
+      install -Dm755 "./bin/spok" "${pkgdir}/usr/bin/spok"
+      install -Dm755 "./scripts/configure-spok-server.sh" "${pkgdir}/etc/spok/scripts/configure-spok-server.sh"
+      install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/spok/LICENSE"
+      install -Dm644 "./README.md" "${pkgdir}/usr/share/doc/spok/README.md"
 
 archives:
   - wrap_in_directory: false
@@ -82,5 +82,5 @@ archives:
     files:
       - LICENSE
       - README.md
-      - scripts/configure-sos-server.sh
+      - scripts/configure-spok-server.sh
       - install.ps1

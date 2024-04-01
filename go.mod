@@ -1,4 +1,4 @@
-module github.com/devlup-labs/sos
+module github.com/devlup-labs/spok
 
 go 1.22.0
 

@@ -53,7 +53,7 @@ func (p *Policy) Unmarshal(filename string) error {
 func AddPolicy(email string, principal string) {
 	policy := new(Policy)
 
-	err := policy.Unmarshal("/etc/sos/policy.yml")
+	err := policy.Unmarshal("/etc/spok/policy.yml")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -95,7 +95,7 @@ func AddPolicy(email string, principal string) {
 		policy.User = append(policy.User, *userDetails)
 	}
 
-	f, err := os.Create("/etc/sos/policy.yml")
+	f, err := os.Create("/etc/spok/policy.yml")
 	if err != nil {
 		fmt.Println("File not Found policy.yml")
 
@@ -131,7 +131,7 @@ func findIndex(x []UsersDetails, y UsersDetails) int {
 
 func RemovePolicy(email string, principal string) {
 	policy := new(Policy)
-	err := policy.Unmarshal("/etc/sos/policy.yml")
+	err := policy.Unmarshal("/etc/spok/policy.yml")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -176,7 +176,7 @@ func RemovePolicy(email string, principal string) {
 		}
 	}
 
-	f, err := os.Create("/etc/sos/policy.yml")
+	f, err := os.Create("/etc/spok/policy.yml")
 	if err != nil {
 		fmt.Println("File not Found policy.yml")
 		return

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/stretchr/testify/require"
 )
 

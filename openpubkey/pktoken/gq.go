@@ -4,7 +4,7 @@ import (
 	"crypto/rsa"
 	"fmt"
 
-	"github.com/devlup-labs/sos/openpubkey/gq"
+	"github.com/devlup-labs/spok/openpubkey/gq"
 )
 
 func (p *PKToken) VerifyGQSig(pubKey *rsa.PublicKey, gqSecurityParameter int) error {

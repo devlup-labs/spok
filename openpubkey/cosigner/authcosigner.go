@@ -22,8 +22,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/devlup-labs/sos/openpubkey/cosigner/msgs"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/cosigner/msgs"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jws"
 )

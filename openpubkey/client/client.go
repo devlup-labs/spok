@@ -28,10 +28,10 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jws"
 
-	"github.com/devlup-labs/sos/openpubkey/gq"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
-	"github.com/devlup-labs/sos/openpubkey/pktoken/clientinstance"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/gq"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/pktoken/clientinstance"
+	"github.com/devlup-labs/spok/openpubkey/util"
 )
 
 // OpkClient is the OpenPubkey client

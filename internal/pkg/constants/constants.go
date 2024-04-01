@@ -3,7 +3,7 @@ package constants
 import (
 	"fmt"
 
-	"github.com/devlup-labs/sos/openpubkey/client/providers"
+	"github.com/devlup-labs/spok/openpubkey/client/providers"
 )
 
 var (

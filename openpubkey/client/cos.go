@@ -30,9 +30,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/devlup-labs/sos/openpubkey/cosigner/msgs"
-	"github.com/devlup-labs/sos/openpubkey/pktoken"
-	"github.com/devlup-labs/sos/openpubkey/util"
+	"github.com/devlup-labs/spok/openpubkey/cosigner/msgs"
+	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jws"
 	"github.com/sirupsen/logrus"
 )

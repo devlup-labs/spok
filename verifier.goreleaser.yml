@@ -25,7 +25,7 @@ release:
   prerelease: auto
   github:
     owner: devlup-labs
-    name: sos
+    name: spok
   name_template: "{{.ProjectName}}-v{{.Version}}"
 
 archives:
