@@ -12,7 +12,7 @@ An easier way for remote server authentication. Powered bv [OpenPubkey](https://
 yay -S spok-bin
 ```
 
-### For Ubuntu/Debian Users:
+### For Debian-based (Debian, Ubuntu, Linux Mint, etc.) Users:
 
 - You can install by running the following commands
 ```bash
