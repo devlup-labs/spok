@@ -90,9 +90,7 @@ chocolateys:
   - name: spok
     owners: DevlUp Labs
     title: Sans Password or Key (SPoK)
-    authors:
-      - Saahil Bhavsar
-      - Jyotin Goel
+    authors: Saahil Bhavsar
     project_url: https://github.com/devlup-labs/spok
     url_template: "https://github.com/devlup-labs/spok/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     copyright: 2024 DevlUp Labs
@@ -106,6 +104,6 @@ chocolateys:
       SPoK installer package.
       An easier way for remote server authentication.
     release_notes: "https://github.com/devlup-labs/spok/releases/tag/v{{ .Version }}"
-    api_key: '{{ .Env.CHOCOLATEY_API_KEY }}'
+    api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
     source_repo: "https://push.chocolatey.org/"
     skip_publish: false
