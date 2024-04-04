@@ -45,7 +45,13 @@ var configureCmd = &cobra.Command{
 
 		switch platform {
 		case "windows":
-			configDirs = []string{"C:/ProgramData/SPoK"}
+			homeDir, err := os.UserHomeDir()
+			cobra.CheckErr(err)
+
+			configDirs = []string{
+				homeDir + "/scoop/apps/spok/" + pkg.Version,
+				"C:/ProgramData/SPoK",
+			}
 		default:
 			configDirs = []string{
 				"/etc/spok", "/opt/homebrew/etc/spok", "/usr/local/etc/spok",
