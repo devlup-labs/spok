@@ -75,13 +75,28 @@ aurs:
       install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/spok/LICENSE"
       install -Dm644 "./README.md" "${pkgdir}/usr/share/doc/spok/README.md"
 
-
 brews:
   - name: spok
-    homepage: https://github.com/devlup-labs/spok
-    tap:
+    url_template: "https://github.com/devlup-labs/spok/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    download_strategy: CurlDownloadStrategy
+    commit_author:
+      name: SaahilNotSahil
+      email: saahil_bhavsar@outlook.com
+    commit_msg_template: "Brew formula update for spok version {{ .Tag }}"
+    homepage: "https://github.com/devlup-labs/spok"
+    description: "Sans Password or Key (SPoK) - An easier way for remote server authentication."
+    license: "MIT"
+    skip_upload: false
+    install: |
+        bin.install "bin/spok"
+
+        (etc/"spok"/"scripts").install "scripts/configure-spok-server.sh"
+    repository:
       owner: devlup-labs
       name: homebrew-spok
+      branch: main
+      pull_request:
+        enabled: false
 
 archives:
   - wrap_in_directory: false
@@ -94,24 +109,24 @@ archives:
       - scripts/configure-spok-server.sh
       - chocolateyInstall.ps1
 
-chocolateys:
-  - name: spok
-    owners: DevlUp Labs
-    title: Sans Password or Key (SPoK)
-    authors: Saahil Bhavsar
-    project_url: https://github.com/devlup-labs/spok
-    url_template: "https://github.com/devlup-labs/spok/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-    copyright: 2024 DevlUp Labs
-    license_url: https://github.com/devlup-labs/spok/blob/main/LICENSE
-    require_license_acceptance: false
-    project_source_url: https://github.com/devlup-labs/spok
-    docs_url: https://github.com/devlup-labs/spok/blob/main/README.md
-    bug_tracker_url: https://github.com/devlup-labs/spok/issues
-    summary: An easier way for remote server authentication.
-    description: |
-      SPoK installer package.
-      An easier way for remote server authentication.
-    release_notes: "https://github.com/devlup-labs/spok/releases/tag/v{{ .Version }}"
-    api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
-    source_repo: "https://push.chocolatey.org/"
-    skip_publish: false
+# chocolateys:
+#   - name: spok
+#     owners: DevlUp Labs
+#     title: Sans Password or Key (SPoK)
+#     authors: Saahil Bhavsar
+#     project_url: https://github.com/devlup-labs/spok
+#     url_template: "https://github.com/devlup-labs/spok/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+#     copyright: 2024 DevlUp Labs
+#     license_url: https://github.com/devlup-labs/spok/blob/main/LICENSE
+#     require_license_acceptance: false
+#     project_source_url: https://github.com/devlup-labs/spok
+#     docs_url: https://github.com/devlup-labs/spok/blob/main/README.md
+#     bug_tracker_url: https://github.com/devlup-labs/spok/issues
+#     summary: An easier way for remote server authentication.
+#     description: |
+#       SPoK installer package.
+#       An easier way for remote server authentication.
+#     release_notes: "https://github.com/devlup-labs/spok/releases/tag/v{{ .Version }}"
+#     api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
+#     source_repo: "https://push.chocolatey.org/"
+#     skip_publish: false

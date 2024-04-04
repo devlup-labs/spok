@@ -29,9 +29,6 @@ brew tap devlup-labs/spok
 brew install spok
 ```
 
-
-
-
 ### Coming soon for other Operation Systems :)
 
 ## Setup
