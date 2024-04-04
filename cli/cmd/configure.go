@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -29,7 +30,7 @@ var configureCmd = &cobra.Command{
 		privateKeyAuth := false
 		privateKeyPath := ""
 
-		runtime_present := runtime.GOOS
+		platform := runtime.GOOS
 
 		if keyFlag != "" {
 			fmt.Println("Private Key Mode selected.")
@@ -37,13 +38,31 @@ var configureCmd = &cobra.Command{
 			privateKeyAuth = true
 			privateKeyPath = keyFlag
 		}
-		var runtime_path string
 
-		if runtime_present == "windows" {
-			runtime_path = "C:/ProgramData/SPoK"
-		} else {
-			runtime_path = "/etc/spok"
+		var configDirs []string
+		var configPath string
+
+		switch platform {
+		case "windows":
+			configDirs = []string{"C:/ProgramData/SPoK"}
+		case "unix":
+			configDirs = []string{
+				"/etc/spok", "/opt/homebrew/etc/spok", "/usr/local/etc/spok",
+			}
 		}
+
+		for i, dir := range configDirs {
+			configPath = dir + "/scripts/configure-spok-server.sh"
+			
+			_, err := os.Stat(configPath)
+			if err == nil {
+				break
+			} else if i == len(configDirs) - 1 {
+				log.Fatal("Configuration script not found.")
+			}
+		}
+
+		serverConfigPath := "/root/configure-spok-server.sh"
 
 		var scpCommandScript []string
 		var sshCommandChmod []string
@@ -54,8 +73,8 @@ var configureCmd = &cobra.Command{
 				"scp",
 				"-i",
 				privateKeyPath,
-				fmt.Sprintf("%s/scripts/configure-spok-server.sh", runtime_path),
-				userArgs + ":/root/configure-spok-server.sh",
+				configPath,
+				userArgs + ":" + serverConfigPath,
 			}
 			sshCommandChmod = []string{
 				"ssh",
@@ -64,34 +83,34 @@ var configureCmd = &cobra.Command{
 				userArgs,
 				"chmod",
 				"+x",
-				"/root/configure-spok-server.sh",
+				serverConfigPath,
 			}
 			sshCommandConfigure = []string{
 				"ssh",
 				"-i",
 				privateKeyPath,
 				userArgs,
-				"/root/configure-spok-server.sh",
+				serverConfigPath,
 				emailArgs,
 				principal,
 			}
 		} else {
 			scpCommandScript = []string{
 				"scp",
-				fmt.Sprintf("%s/scripts/configure-spok-server.sh", runtime_path),
-				userArgs + ":/root/configure-spok-server.sh",
+				configPath,
+				userArgs + ":" + serverConfigPath,
 			}
 			sshCommandChmod = []string{
 				"ssh",
 				userArgs,
 				"chmod",
 				"+x",
-				"/root/configure-spok-server.sh",
+				serverConfigPath,
 			}
 			sshCommandConfigure = []string{
 				"ssh",
 				userArgs,
-				"/root/configure-spok-server.sh",
+				serverConfigPath,
 				emailArgs,
 				principal,
 			}
