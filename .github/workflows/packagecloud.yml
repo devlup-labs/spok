@@ -17,8 +17,8 @@ jobs:
           script: |
             const workflow_run_id = '${{ github.event.workflow_run.id }}';
             const outputs = await github.actions.getWorkflowRun({
-              owner: '${{ github.repository.owner }}',
-              repo: '${{ github.repository.name }}',
+              owner: 'devlup-labs',
+              repo: 'spok',
               run_id: workflow_run_id
             });
             const tag = outputs.data.outputs.tag;
