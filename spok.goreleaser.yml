@@ -75,6 +75,14 @@ aurs:
       install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/spok/LICENSE"
       install -Dm644 "./README.md" "${pkgdir}/usr/share/doc/spok/README.md"
 
+
+brews:
+  - name: spok
+    homepage: https://github.com/devlup-labs/spok
+    tap:
+      owner: gjyotin305
+      name: homebrew-spok
+
 archives:
   - wrap_in_directory: false
     format_overrides:
