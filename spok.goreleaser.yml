@@ -136,7 +136,6 @@ archives:
 scoops:
   - name: spok
     url_template: "https://github.com/devlup-labs/spok/releases/{{ .Tag }}/{{ .ArtifactName }}"
-    use: archive
     commit_author:
       name: SaahilNotSahil
       email: saahil_bhavsar@outlook.com
