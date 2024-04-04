@@ -7,34 +7,19 @@ on:
       - completed
 
 jobs:
-  access_env_from_workflow1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get tag
-        id: get_tag
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const workflow_run_id = '${{ github.event.workflow_run.id }}';
-            const outputs = await github.actions.getWorkflowRun({
-              owner: 'devlup-labs',
-              repo: 'spok',
-              run_id: workflow_run_id
-            });
-            const tag = outputs.data.outputs.tag;
-            console.log(`::set-env name=TAG::${tag}`);
   packagecloud:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ env.TAG }}
-      - run: wget https://github.com/devlup-labs/spok/releases/download/0.1.0/spok_0.1.0_linux_amd64.deb
+      - run: cat VERSION
+      - run: echo "TAG=$(cat VERSION)" >> $GITHUB_ENV
+      - run: wget https://github.com/devlup-labs/spok/releases/download/${{ env.TAG }}/spok_${{ env.TAG }}_linux_amd64.deb
       - name: Upload package PackageCloud.io
         uses: danielmundi/upload-packagecloud@v1
         with:
           packagecloud-token: ${{ secrets.PACKAGECLOUD_TOKEN }}
           packagecloud-username: "SaahilNotSahil"
           packagecloud-repo: "spok"
-          package-name: spok_0.1.0_linux_amd64.deb
+          package-name: spok_${{ env.TAG }}_linux_amd64.deb
           packagecloud-distrib: any/any
 
       - run: wget https://github.com/devlup-labs/spok/releases/download/0.1.0/spok_0.1.0_linux_arm64.deb
