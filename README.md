@@ -1,5 +1,5 @@
 # SPoK - *Sans* Password or Key (v0.1.0)
-An easier way for remote server authentication. Powered bv [OpenPubkey](https://github.com/openpubkey/openpubkey).
+An easier way for remote server authentication. Powered by [OpenPubkey](https://github.com/openpubkey/openpubkey).
 
 ## Installation
 
@@ -27,6 +27,10 @@ sudo apt install spok
 ```bash
 brew tap devlup-labs/spok
 brew install spok
+```
+- To upgrade the package:
+```bash
+brew upgrade spok
 ```
 
 ### Coming soon for other Operation Systems :)
