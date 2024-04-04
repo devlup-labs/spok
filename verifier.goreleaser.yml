@@ -20,7 +20,8 @@ builds:
         {{- end }}
     flags:
       - -mod=vendor
-      - -ldflags "-X github.com/devlup-labs/spok/internal/pkg.Version={{ .Version }}"
+    ldflags:
+      - -X github.com/devlup-labs/spok/internal/pkg.Version={{ .Version }}
 
 release:
   prerelease: auto
