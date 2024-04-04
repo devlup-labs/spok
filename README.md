@@ -21,6 +21,17 @@ sudo apt update
 sudo apt install spok
 ```
 
+### For Homebrew (Mac, Linux):
+
+- You can install by running the following commands
+```bash
+brew tap devlup-labs/spok
+brew install spok
+```
+
+
+
+
 ### Coming soon for other Operation Systems :)
 
 ## Setup
