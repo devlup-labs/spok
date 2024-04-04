@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/devlup-labs/spok/internal/pkg"
 	"github.com/spf13/cobra"
 )
 
@@ -95,6 +96,7 @@ var configureCmd = &cobra.Command{
 				serverConfigPath,
 				emailArgs,
 				principal,
+				pkg.Version,
 			}
 		} else {
 			scpCommandScript = []string{
@@ -115,6 +117,7 @@ var configureCmd = &cobra.Command{
 				serverConfigPath,
 				emailArgs,
 				principal,
+				pkg.Version,
 			}
 		}
 

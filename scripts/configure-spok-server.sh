@@ -1,6 +1,7 @@
 # Assign arguments to variables
 EMAIL="$1"
 USER="$2"
+VERSION="$3"
 
 ARCH=$(uname -m)
 OS=$(uname -os)
@@ -9,7 +10,7 @@ OS_VAL=$(echo "$OS" | cut -d ' ' -f 1)
 
 # Validate input arguments
 if [ -z "${EMAIL}" ] || [ -z "${USER}" ]; then
-    echo "Usage: $0 <EMAIL> <USER>"
+    echo "Usage: $0 <EMAIL> <USER> <VERSION>"
     exit 1
 fi
 
@@ -17,17 +18,17 @@ if sudo -nl &> /dev/null || $(id -u) -ne 0; then
     echo "User has sudo privileges without a password."
 
     if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_linux_amd64
-        mv verifier_0.1.0_linux_amd64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_amd64
+        mv verifier_${VERSION}_linux_amd64 verifier
     elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_linux_arm64
-        mv verifier_0.1.0_linux_arm64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_arm64
+        mv verifier_${VERSION}_linux_arm64 verifier
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
-        mv verifier_0.1.0_darwin_amd64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_amd64
+        mv verifier_${VERSION}_darwin_amd64 verifier
     elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
-        mv verifier_0.1.0_darwin_arm64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
+        mv verifier_${VERSION}_darwin_arm64 verifier
     else 
         echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
     fi
@@ -66,17 +67,17 @@ else
     mkdir ~/.spok
 
     if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_linux_amd64
-        mv verifier_0.1.0_linux_amd64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_amd64
+        mv verifier_${VERSION}_linux_amd64 verifier
     elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_linux_arm64
-        mv verifier_0.1.0_linux_arm64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_arm64
+        mv verifier_${VERSION}_linux_arm64 verifier
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_darwin_amd64
-        mv verifier_0.1.0_darwin_amd64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_amd64
+        mv verifier_${VERSION}_darwin_amd64 verifier
     elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/0.1.0/verifier_0.1.0_darwin_arm64
-        mv verifier_0.1.0_darwin_arm64 verifier
+        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
+        mv verifier_${VERSION}_darwin_arm64 verifier
     else 
         echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
     fi
