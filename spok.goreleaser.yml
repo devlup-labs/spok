@@ -132,3 +132,24 @@ archives:
 #     api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
 #     source_repo: "https://push.chocolatey.org/"
 #     skip_publish: false
+
+scoops:
+  - name: spok
+    url_template: "https://github.com/devlup-labs/spok/releases/{{ .Tag }}/{{ .ArtifactName }}"
+    use: archive
+    commit_author:
+      name: SaahilNotSahil
+      email: saahil_bhavsar@outlook.com
+    commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+    homepage: "https://github.com/devlup-labs/spok"
+    description: "Sans Password or Key (SPoK) - An easier way for remote server authentication."
+    license: MIT
+    skip_upload: false
+    pre_install: ["Write-Host 'Running preinstall command'"]
+    post_install: ["Write-Host 'Running postinstall command'"]
+    repository:
+      owner: devlup-labs
+      name: scoop-spok
+      branch: main
+      pull_request:
+        enabled: false
