@@ -45,7 +45,7 @@ var configureCmd = &cobra.Command{
 		switch platform {
 		case "windows":
 			configDirs = []string{"C:/ProgramData/SPoK"}
-		case "unix":
+		default:
 			configDirs = []string{
 				"/etc/spok", "/opt/homebrew/etc/spok", "/usr/local/etc/spok",
 			}
@@ -61,6 +61,8 @@ var configureCmd = &cobra.Command{
 				log.Fatal("Configuration script not found.")
 			}
 		}
+
+		fmt.Println("Configuration script found at:", configPath)
 
 		serverConfigPath := "/root/configure-spok-server.sh"
 
