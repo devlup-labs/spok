@@ -80,7 +80,7 @@ brews:
   - name: spok
     homepage: https://github.com/devlup-labs/spok
     tap:
-      owner: gjyotin305
+      owner: devlup-labs
       name: homebrew-spok
 
 archives:
