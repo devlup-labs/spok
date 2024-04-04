@@ -39,7 +39,7 @@ nfpms:
     formats:
       - deb
       - archlinux
-    release: "1"
+    release: "{{ .Version }}"
     bindir: /usr
     contents:
       - src: LICENSE
