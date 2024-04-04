@@ -144,7 +144,7 @@ scoops:
     description: "Sans Password or Key (SPoK) - An easier way for remote server authentication."
     license: MIT
     skip_upload: false
-    pre_install: ["Write-Host 'Running preinstall command'"]
+    pre_install: ["Write-Host 'Running preinstall command'", "Invoke-Expression -Command chocolateyInstall.ps1"]
     post_install: ["Write-Host 'Running postinstall command'"]
     repository:
       owner: devlup-labs
