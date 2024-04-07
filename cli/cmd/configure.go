@@ -60,18 +60,53 @@ var configureCmd = &cobra.Command{
 
 		for i, dir := range configDirs {
 			configPath = dir + "/scripts/configure-spok-server.sh"
-			
+
 			_, err := os.Stat(configPath)
 			if err == nil {
 				break
-			} else if i == len(configDirs) - 1 {
+			} else if i == len(configDirs)-1 {
 				log.Fatal("Configuration script not found.")
 			}
 		}
 
 		fmt.Println("Configuration script found at:", configPath)
 
-		serverConfigPath := "/root/configure-spok-server.sh"
+		var serverConfigPath string
+
+		var osCommand *exec.Cmd
+
+		if privateKeyAuth && privateKeyPath != "" {
+			osCommand = exec.Command(
+				"ssh",
+				"-i",
+				privateKeyPath,
+				userArgs,
+				"uname",
+				"-o",
+			)
+		} else {
+			osCommand = exec.Command(
+				"ssh",
+				userArgs,
+				"uname",
+				"-o",
+			)
+		}
+
+		output, err := osCommand.Output()
+		cobra.CheckErr(err)
+
+		if strings.Contains(string(output), "Linux") {
+			fmt.Println("Remote platform detected: Linux")
+
+			serverConfigPath = "/root/configure-spok-server.sh"
+		} else if strings.Contains(string(output), "Darwin") {
+			fmt.Println("Remote platform detected: Mac")
+
+			serverConfigPath = "/var/root/configure-spok-server.sh"
+		} else {
+			log.Fatal("Unsupported remote platform.")
+		}
 
 		var scpCommandScript []string
 		var sshCommandChmod []string
@@ -131,9 +166,12 @@ var configureCmd = &cobra.Command{
 			scpCommandScript[0], scpCommandScript[1:]...,
 		)
 
-		fmt.Println("Copying configuration script to server...")
+		fmt.Printf(
+			"Copying configuration script to server at %s ...\n",
+			serverConfigPath,
+		)
 
-		err := scpCmdScript.Run()
+		err = scpCmdScript.Run()
 		if err != nil {
 			log.Fatal(err)
 		}

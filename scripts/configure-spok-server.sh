@@ -14,20 +14,31 @@ if [ -z "${EMAIL}" ] || [ -z "${USER}" ]; then
     exit 1
 fi
 
-if sudo -nl &> /dev/null || $(id -u) -ne 0; then
+if sudo -nl &> /dev/null || [ "$(id -u)" -ne 0 ]; then
     echo "User has sudo privileges without a password."
 
+    # Check for wget or curl availability
+    DOWNLOADER=""
+    if command -v wget &> /dev/null; then
+        DOWNLOADER="wget"
+    elif command -v curl &> /dev/null; then
+        DOWNLOADER="curl -LO"
+    else
+        echo "Neither wget nor curl is available. Please install either of them."
+        exit 1
+    fi
+
     if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_amd64
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_amd64
         mv verifier_${VERSION}_linux_amd64 verifier
     elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_arm64
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_arm64
         mv verifier_${VERSION}_linux_arm64 verifier
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_amd64
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_amd64
         mv verifier_${VERSION}_darwin_amd64 verifier
-    elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
+    elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
         mv verifier_${VERSION}_darwin_arm64 verifier
     else 
         echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
@@ -66,17 +77,28 @@ else
 
     mkdir ~/.spok
 
+    # Check for wget or curl availability
+    DOWNLOADER=""
+    if command -v wget &> /dev/null; then
+        DOWNLOADER="wget"
+    elif command -v curl &> /dev/null; then
+        DOWNLOADER="curl -LO"
+    else
+        echo "Neither wget nor curl is available. Please install either of them."
+        exit 1
+    fi
+
     if [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_amd64
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_amd64
         mv verifier_${VERSION}_linux_amd64 verifier
     elif [[ "$OS_VAL" == *"Linux"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_arm64
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_linux_arm64
         mv verifier_${VERSION}_linux_arm64 verifier
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"x86_64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_amd64
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_amd64
         mv verifier_${VERSION}_darwin_amd64 verifier
-    elif  [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
-        wget https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
+    elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
+        $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
         mv verifier_${VERSION}_darwin_arm64 verifier
     else 
         echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
