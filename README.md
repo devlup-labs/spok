@@ -1,21 +1,22 @@
 <div align="center">
 
-# SPoK - *Sans* Password or Key
+# SPoK - _Sans_ Password or Key
 
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 ![Github Release](https://img.shields.io/github/v/release/devlup-labs/spok)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/devlup-labs/spok)
 
-
 An easier way for remote server authentication. Powered by [OpenPubkey](https://github.com/openpubkey/openpubkey).
+
 </div>
 
 ## Features
-* **Extensibility**: Eliminate the need of using public keys (RSA, etc.) to add people to your server; you can simply add them using their Email addresses.
-* **Scalability**: Add as many people as necessary to your server via their emails.
-* **Security**: This project integrates [OpenPubkey](https://github.com/openpubkey/openpubkey), leveraging the OpenID Connect (OIDC) Protocol for enhanced SSH authentication security.
-* **Single Command**: Configure your server for SPoK with just one command.
-* **Runs Everywhere**: Set up SPoK on any machine—whether it's local, remote, cloud-based, physical server, or a VM—and on any architecture, including x86 or ARM
+
+- **Extensibility**: Eliminate the need of using public keys (RSA, etc.) to add people to your server; you can simply add them using their Email addresses.
+- **Scalability**: Add as many people as necessary to your server via their emails.
+- **Security**: This project integrates [OpenPubkey](https://github.com/openpubkey/openpubkey), leveraging the OpenID Connect (OIDC) Protocol for enhanced SSH authentication security.
+- **Single Command**: Configure your server for SPoK with just one command.
+- **Runs Everywhere**: Set up SPoK on any machine—whether it's local, remote, cloud-based, physical server, or a VM—and on any architecture, including x86 or ARM
 
 ## Why SPok?
 
@@ -37,8 +38,6 @@ This approach offers several advantages:
 
 Overall, SPoK aims to modernize SSH authentication, making it more secure, convenient, and scalable for organizations of all sizes. By eliminating the complexities associated with traditional SSH key management, SPoK offers a streamlined solution that meets the security needs of today's dynamic computing environments.
 
-
-
 ## Installation
 
 ### Linux:
@@ -46,7 +45,7 @@ Overall, SPoK aims to modernize SSH authentication, making it more secure, conve
 #### Arch-based Distros (Arch Linux, EndeavourOS, Manjaro, etc.):
 
 - Download the AUR package for SPoK:
-   (You can install it with your favourite AUR helper)
+  (You can install it with your favourite AUR helper)
 
 ```bash
 yay -S spok-bin
@@ -55,6 +54,7 @@ yay -S spok-bin
 #### Debian-based Distros (Debian, Ubuntu, Linux Mint, etc.):
 
 - You can install by running the following commands
+
 ```bash
 curl -s https://packagecloud.io/install/repositories/SaahilNotSahil/spok/script.deb.sh?any=true | sudo bash
 sudo apt update
@@ -66,11 +66,14 @@ sudo apt install spok
 #### Homebrew
 
 - You can install by running the following commands
+
 ```shell
 brew tap devlup-labs/spok
 brew install spok
 ```
+
 - To upgrade the package:
+
 ```shell
 brew upgrade spok
 ```
@@ -78,21 +81,26 @@ brew upgrade spok
 ### Windows:
 
 #### Scoop:
+
 - First, you need to install [Scoop](https://scoop.sh/).
 - Next, run the following commands in PowerShell
+
 ```shell
 scoop bucket add org https://github.com/devlup-labs/scoop-spok.git
 scoop install spok
 ```
 
 #### From archive:
+
 - Download the latest release (`spok_<version>_windows_amd64.zip`) from [here](https://github.com/devlup-labs/spok/releases).
 - Extract the zip file.
 - Open Powershell as administrator and run the following commands
+
 ```shell
 cd <path-to-extracted-folder>
 .\install.ps1
 ```
+
 - SPoK is now installed on your system in the `C:\Program Files\SPoK` directory, and is added to the PATH.
 
 ## Usage
@@ -101,6 +109,7 @@ SPoK consists of two parts: the `spok` client CLI tool, and the `verifier` serve
 You must have access to the `root` user on the server, or any other user with `sudo` privileges, to configure the server to use SPoK.
 
 ### Client side:
+
 - Configure your server by running the following command
 
 ```shell
@@ -118,6 +127,7 @@ spok configure -i <pvt_key_path> -s <user>@<server-ip> -e <email-id>
 ```shell
 spok login
 ```
+
 #### Note: Currently works only with Google (Gmail + Google Workspace) accounts.
 
 - Now you can SSH into your server, and it won't ask for a password or key
@@ -127,6 +137,7 @@ ssh <user>@<server-ip>
 ```
 
 #### Note 2: The server must have an active internet connection for configuring SPoK, as well as every time you SSH into the server. If it ever loses internet connectivity, you can always fall back to using a password or key.
+
 #### Note 3: Currently the validity of the token is 1 hour. After that, you will have to re-login to your email account. Just use the `spok login` command again.
 
 ### Server side:
@@ -140,19 +151,25 @@ This file can be edited directly using a text editor, or preferably using the `v
 
 #### Verifier:
 
-The `verifier` tool primarily serves two purposes:-  
+The `verifier` tool primarily serves two purposes:-
+
 1. Once configured, the `verifier` becomes the default authentication provider for `sshd` on the server. When you ssh into the server using a certificate that is generated by `spok login`, the verifier verifies the certificate for authenticity, and also checks it against the policy stored in the `policy.yml` file. Once verified, you are automatically logged into the server. If it fails to verify, it'll fall back on other configured modes of authentication.
 2. It can also be used to add/remove `principals` for different email addresses in the `policy.yml` file.
+
 - To add a new principal called `user` for the email address `someone@example.com`, run the following command:
+
 ```shell
 /etc/spok/verifier add someone@example.com user
 ```
 
 - Similarly, to remove the principal, use the `remove` command:
+
 ```shell
 /etc/spok/verifier remove someone@example.com user
 ```
+
 ## License
+
 This repository contains SPoK, covered under the [MIT License](LICENSE), except where noted.
 
 It is distributed under the terms of the MIT License.
