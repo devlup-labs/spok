@@ -3,8 +3,8 @@
 # SPoK - *Sans* Password or Key
 
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
-[![Github Release](https://img.shields.io/github/v/release/devlup-labs/spok)]()
-[![Issues - daytona](https://img.shields.io/github/issues/devlup-labs/spok)](https://github.com/devlup-labs/spok/issues)
+![Github Release](https://img.shields.io/github/v/release/devlup-labs/spok)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/devlup-labs/spok)
 
 
 An easier way for remote server authentication. Powered by [OpenPubkey](https://github.com/openpubkey/openpubkey).
