@@ -14,14 +14,14 @@ if [ -z "${EMAIL}" ] || [ -z "${USER}" ]; then
     exit 1
 fi
 
-if sudo -nl &> /dev/null || [ "$(id -u)" -ne 0 ]; then
+if sudo -nl &>/dev/null || [ "$(id -u)" -ne 0 ]; then
     echo "User has sudo privileges without a password."
 
     # Check for wget or curl availability
     DOWNLOADER=""
-    if command -v wget &> /dev/null; then
+    if command -v wget &>/dev/null; then
         DOWNLOADER="wget"
-    elif command -v curl &> /dev/null; then
+    elif command -v curl &>/dev/null; then
         DOWNLOADER="curl -LO"
     else
         echo "Neither wget nor curl is available. Please install either of them."
@@ -40,7 +40,7 @@ if sudo -nl &> /dev/null || [ "$(id -u)" -ne 0 ]; then
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
         $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
         mv verifier_${VERSION}_darwin_arm64 verifier
-    else 
+    else
         echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
     fi
 
@@ -61,16 +61,30 @@ if sudo -nl &> /dev/null || [ "$(id -u)" -ne 0 ]; then
 
     # Comment out existing AuthorizedKeysCommand configuration
     # TODO: How do these other AuthorizedKeysCommands interact with our own?
-    sudo sed -i '/^AuthorizedKeysCommand /s/^/#/' "/etc/ssh/sshd_config"
-    sudo sed -i '/^AuthorizedKeysCommandUser /s/^/#/' "/etc/ssh/sshd_config"
+    if [[ "$OS_VAL" == *"Linux"* ]]; then
+        sudo sed -i '/^AuthorizedKeysCommand /s/^/#/' "/etc/ssh/sshd_config"
+        sudo sed -i '/^AuthorizedKeysCommandUser /s/^/#/' "/etc/ssh/sshd_config"
+    elif [[ "$OS_VAL" == *"Darwin"* ]]; then
+        sudo sed -i '' '/^AuthorizedKeysCommand /s/^/#/' "/etc/ssh/sshd_config"
+        sudo sed -i '' '/^AuthorizedKeysCommandUser /s/^/#/' "/etc/ssh/sshd_config"
+    else
+        echo "This OS: $OS_VAL is not supported please contact the developers for help :)"
+    fi
 
     # Add our AuthorizedKeysCommand line so that the spok verifier is called when ssh-ing in
-    sudo tee -a /etc/ssh/sshd_config > /dev/null <<EOT
+    sudo tee -a /etc/ssh/sshd_config >/dev/null <<EOT
 AuthorizedKeysCommand /etc/spok/verifier verify %u %k %t
 AuthorizedKeysCommandUser root
 EOT
 
-    sudo systemctl restart sshd || sudo systemctl restart ssh
+    if sudo systemctl restart sshd &>/dev/null; then
+        echo "SSH service restarted successfully."
+    elif sudo systemctl restart ssh &>/dev/null; then
+        echo "SSH service restarted successfully."
+    else
+        exit 0
+    fi
+
     exit 0
 else
     echo "The user is not root and does not have sudo access; adding resources to user's home directory"
@@ -79,9 +93,9 @@ else
 
     # Check for wget or curl availability
     DOWNLOADER=""
-    if command -v wget &> /dev/null; then
+    if command -v wget &>/dev/null; then
         DOWNLOADER="wget"
-    elif command -v curl &> /dev/null; then
+    elif command -v curl &>/dev/null; then
         DOWNLOADER="curl -LO"
     else
         echo "Neither wget nor curl is available. Please install either of them."
@@ -100,7 +114,7 @@ else
     elif [[ "$OS_VAL" == *"Darwin"* && "$ARCH" == *"arm64"* ]]; then
         $DOWNLOADER https://github.com/devlup-labs/spok/releases/download/${VERSION}/verifier_${VERSION}_darwin_arm64
         mv verifier_${VERSION}_darwin_arm64 verifier
-    else 
+    else
         echo "This OS: $OS_VAL and ARCH: $ARCH is not supported please contact the developers for help :)"
     fi
 
@@ -113,5 +127,6 @@ else
     chmod 600 ~/.spok/policy.yml
 
     ~/.spok/verifier add "${EMAIL}" "${USER}"
+
     exit 0
 fi

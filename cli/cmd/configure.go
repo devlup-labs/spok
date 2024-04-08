@@ -171,6 +171,9 @@ var configureCmd = &cobra.Command{
 			serverConfigPath,
 		)
 
+		scpCmdScript.Stdout = os.Stdout
+		scpCmdScript.Stderr = os.Stderr
+
 		err = scpCmdScript.Run()
 		if err != nil {
 			log.Fatal(err)
@@ -182,6 +185,9 @@ var configureCmd = &cobra.Command{
 
 		fmt.Println("Making configuration script executable...")
 
+		sshCmdChmod.Stdout = os.Stdout
+		sshCmdChmod.Stderr = os.Stderr
+
 		err = sshCmdChmod.Run()
 		if err != nil {
 			log.Fatal(err)
@@ -192,6 +198,9 @@ var configureCmd = &cobra.Command{
 		)
 
 		fmt.Println("Configuring SPoK server...")
+
+		sshCmdConfigure.Stdout = os.Stdout
+		sshCmdConfigure.Stderr = os.Stderr
 
 		err = sshCmdConfigure.Run()
 		if err != nil {
