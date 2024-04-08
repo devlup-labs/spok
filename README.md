@@ -21,7 +21,7 @@ An easier way for remote server authentication. Powered by [OpenPubkey](https://
 
 The motivation behind SPoK (Sans Password or Key) for SSH is to revolutionize SSH authentication by addressing security concerns and simplifying key management.
 
-Traditional SSH authentication relies on the manual distribution and management of RSA keys, which can be error-prone and cumbersome, particularly in environments with numerous users or frequent key rotations. SPoK aims to streamline this process by introducing a modern approach to SSH authentication.
+Traditional SSH authentication relies on the manual distribution and management of public keys, which can be error-prone and cumbersome, particularly in environments with numerous users or frequent key rotations. SPoK aims to streamline this process by introducing a modern approach to SSH authentication.
 
 SPoK utilizes a combination of cryptographic techniques, including secure key exchange protocols and cryptographic signatures, to ensure secure and efficient authentication. By integrating SPoK with SSH, users can authenticate using their email addresses , eliminating the need for managing SSH keys separately.
 
