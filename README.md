@@ -12,13 +12,30 @@ An easier way for remote server authentication. Powered by [OpenPubkey](https://
 
 ## Features
 * **Extensibility**: Eliminate the need of using public keys (RSA, etc.) to add people to your server; you can simply add them using their Email addresses.
-
 * **Scalability**: Add as many people as necessary to your server via their emails.
 * **Security**: This project integrates [OpenPubkey](https://github.com/openpubkey/openpubkey), leveraging the OpenID Connect (OIDC) Protocol for enhanced SSH authentication security.
 * **Single Command**: Configure your server for SPoK with just one command.
 * **Runs Everywhere**: Set up SPoK on any machine—whether it's local, remote, cloud-based, physical server, or a VM—and on any architecture, including x86 or ARM
 
 ## Why SPok?
+
+The motivation behind SPoK (Sans Password or Key) for SSH is to revolutionize SSH authentication by addressing security concerns and simplifying key management.
+
+Traditional SSH authentication relies on the manual distribution and management of RSA keys, which can be error-prone and cumbersome, particularly in environments with numerous users or frequent key rotations. SPoK aims to streamline this process by introducing a modern approach to SSH authentication.
+
+SPoK utilizes a combination of cryptographic techniques, including secure key exchange protocols and cryptographic signatures, to ensure secure and efficient authentication. By integrating SPoK with SSH, users can authenticate using their email addresses , eliminating the need for managing SSH keys separately.
+
+This approach offers several advantages:
+
+1. **Simplified Management**: SPoK eliminates the need for manually distributing and managing SSH keys, reducing administrative overhead and potential errors.
+
+2. **Enhanced Security**: SPoK leverages modern cryptographic techniques to ensure secure authentication, mitigating common security risks associated with SSH key management.
+
+3. **Scalability**: SPoK is designed to scale effectively, allowing organizations to manage authentication for large numbers of users and devices with ease.
+
+4. **Compatibility**: SPoK is compatible with existing SSH infrastructure, making it easy to integrate into existing systems without major modifications.
+
+Overall, SPoK aims to modernize SSH authentication, making it more secure, convenient, and scalable for organizations of all sizes. By eliminating the complexities associated with traditional SSH key management, SPoK offers a streamlined solution that meets the security needs of today's dynamic computing environments.
 
 
 
