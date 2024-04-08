@@ -1,5 +1,21 @@
-# SPoK - *Sans* Password or Key (v0.1.0)
+<div align="center">
+
+# SPoK - *Sans* Password or Key
+
+[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+[![Github Release](https://img.shields.io/github/v/release/devlup-labs/spok)]()
+[![Issues - daytona](https://img.shields.io/github/issues/devlup-labs/spok)](https://github.com/devlup-labs/spok/issues)
+
+
 An easier way for remote server authentication. Powered by [OpenPubkey](https://github.com/openpubkey/openpubkey).
+</div>
+
+## Features
+* __Extensibility__: No more RSA key copying and pasting to add people to your server, you can simply add them using their gmails.
+* __Scalability__: You can add as many people to your server, via their emails.
+* __Security__: This project uses [OpenPubkey](https://github.com/openpubkey/openpubkey) which uses OpenID Connect(OIDC) Protocol that makes SSH authentication even more secure. 
+* __Single Command__: All it takes is one command to fully configure your server for SPoK.
+* __Runs everywhere__: spin up your development environment on any machine — whether it's local, remote, cloud-based, physical server, or a VM & any architecture x86 or ARM.
 
 ## Installation
 
@@ -114,3 +130,11 @@ The `verifier` tool primarily serves two purposes:-
 ```shell
 /etc/spok/verifier remove someone@example.com user
 ```
+## License
+This repository contains SPoK, covered under the [MIT License](LICENSE), except where noted.
+
+It is distributed under the terms of the MIT License.
+
+Third parties are permitted to distribute the software independently, but they are restricted from utilizing any SPoK trademarks, proprietary cloud services, etc.
+
+We expressly authorize you to incorporate our trademarks while developing SPoK itself. However, you are prohibited from publishing or sharing the resulting build, and you may not employ that build to operate SPoK for any other purpose.
