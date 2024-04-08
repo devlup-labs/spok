@@ -11,11 +11,11 @@ An easier way for remote server authentication. Powered by [OpenPubkey](https://
 </div>
 
 ## Features
-* __Extensibility__: No more RSA key copying and pasting to add people to your server, you can simply add them using their gmails.
-* __Scalability__: You can add as many people to your server, via their emails.
-* __Security__: This project uses [OpenPubkey](https://github.com/openpubkey/openpubkey) which uses OpenID Connect(OIDC) Protocol that makes SSH authentication even more secure. 
-* __Single Command__: All it takes is one command to fully configure your server for SPoK.
-* __Runs everywhere__: spin up your development environment on any machine — whether it's local, remote, cloud-based, physical server, or a VM & any architecture x86 or ARM.
+* **Extensibility**: Eliminate the need for copying and pasting RSA keys to add people to your server; you can simply add them using their Email addresses.
+* **Scalability**: Add as many people as necessary to your server via their emails.
+* **Security**: This project integrates [OpenPubkey](https://github.com/openpubkey/openpubkey), leveraging the OpenID Connect (OIDC) Protocol for enhanced SSH authentication security.
+* **Single Command**: Configure your server for SPoK with just one command.
+* **Runs Everywhere**: Set up your development environment on any machine—whether it's local, remote, cloud-based, physical server, or a VM—and on any architecture, including x86 or ARM
 
 ## Installation
 
