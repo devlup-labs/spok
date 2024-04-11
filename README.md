@@ -1,7 +1,7 @@
 <div align="center">
 
 
-<img src="https://i.imgur.com/YKUIDh4.png" width=360>
+<img src="https://i.imgur.com/YKUIDh4.png" width=500>
 
 # SPoK - _Sans_ Password or Key
 
