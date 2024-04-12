@@ -66,6 +66,26 @@ sudo apt update
 sudo apt install spok
 ```
 
+#### RHEL-based Distros (RHEL, Fedora, CentOS, etc.):
+
+- You can install by running the following commands
+
+```shell
+curl -s https://packagecloud.io/install/repositories/SaahilNotSahil/spok/script.rpm.sh?any=true | sudo bash
+sudo rpm install spok
+```
+
+#### From archive:
+
+- Download the latest release (`spok_<version>_linux_<amd64/arm64>.tar.gz`) from [here](https://github.com/devlup-labs/spok/releases).
+- Extract the `tar.gz` file and run the installer script
+```shell
+tar zxvf spok_<version>_linux_<amd64/arm64>.tar.gz
+chmod +x install.sh
+./install.sh
+```
+- SPoK is now installed on your system in the `/usr/bin` directory, which is already in the PATH.
+
 ### Mac:
 
 #### Homebrew
