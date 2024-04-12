@@ -72,7 +72,7 @@ sudo apt install spok
 
 ```shell
 curl -s https://packagecloud.io/install/repositories/SaahilNotSahil/spok/script.rpm.sh?any=true | sudo bash
-sudo rpm install spok
+sudo yum install spok
 ```
 
 #### From archive:
