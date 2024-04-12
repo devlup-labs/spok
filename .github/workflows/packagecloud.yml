@@ -35,3 +35,23 @@ jobs:
           packagecloud-repo: "spok"
           package-name: spok_${{ env.TAG }}_linux_arm64.deb
           packagecloud-distrib: any/any
+
+      - run: wget https://github.com/devlup-labs/spok/releases/download/${{ env.TAG }}/spok_${{ env.TAG }}_linux_amd64.rpm
+      - name: Upload package PackageCloud.io
+        uses: danielmundi/upload-packagecloud@v1
+        with:
+          packagecloud-token: ${{ secrets.PACKAGECLOUD_TOKEN }}
+          packagecloud-username: "SaahilNotSahil"
+          packagecloud-repo: "spok"
+          package-name: spok_${{ env.TAG }}_linux_amd64.rpm
+          packagecloud-distrib: rpm_any/rpm_any
+
+      - run: wget https://github.com/devlup-labs/spok/releases/download/${{ env.TAG }}/spok_${{ env.TAG }}_linux_arm64.rpm
+      - name: Upload package PackageCloud.io
+        uses: danielmundi/upload-packagecloud@v1
+        with:
+          packagecloud-token: ${{ secrets.PACKAGECLOUD_TOKEN }}
+          packagecloud-username: "SaahilNotSahil"
+          packagecloud-repo: "spok"
+          package-name: spok_${{ env.TAG }}_linux_arm64.rpm
+          packagecloud-distrib: rpm_any/rpm_any
