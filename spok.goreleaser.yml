@@ -111,6 +111,7 @@ archives:
       - README.md
       - scripts/configure-spok-server.sh
       - install.ps1
+      - install.sh
 
 scoops:
   - name: spok
