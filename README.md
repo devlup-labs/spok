@@ -1,6 +1,11 @@
 <div align="center">
 
+
+<img src="https://i.imgur.com/6vd8QF2.png" width=500>
+
 # SPoK - _Sans_ Password or Key
+
+<br>
 
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 ![Github Release](https://img.shields.io/github/v/release/devlup-labs/spok)
