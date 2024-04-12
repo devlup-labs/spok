@@ -39,6 +39,7 @@ nfpms:
     formats:
       - deb
       - archlinux
+      - rpm
     release: "1"
     bindir: /usr
     contents:
