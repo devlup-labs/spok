@@ -43,7 +43,7 @@ This approach offers several advantages:
 
 Overall, SPoK aims to modernize SSH authentication, making it more secure, convenient, and scalable for organizations of all sizes. By eliminating the complexities associated with traditional SSH key management, SPoK offers a streamlined solution that meets the security needs of today's dynamic computing environments.
 
-## Installation
+## Installation 
 
 ### Linux:
 
