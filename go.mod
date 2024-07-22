@@ -5,8 +5,10 @@ go 1.22.0
 require (
 	filippo.io/bigmod v0.0.3
 	github.com/awnumar/memguard v0.22.3
+	github.com/buger/goterm v1.0.4
 	github.com/google/uuid v1.4.0
 	github.com/lestrrat-go/jwx/v2 v2.0.21
+	github.com/pkg/term v1.1.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.9.0

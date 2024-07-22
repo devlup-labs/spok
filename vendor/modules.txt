@@ -8,6 +8,9 @@ github.com/awnumar/memcall
 ## explicit; go 1.18
 github.com/awnumar/memguard
 github.com/awnumar/memguard/core
+# github.com/buger/goterm v1.0.4
+## explicit; go 1.15
+github.com/buger/goterm
 # github.com/davecgh/go-spew v1.1.1
 ## explicit
 github.com/davecgh/go-spew/spew
@@ -83,6 +86,10 @@ github.com/lestrrat-go/option
 # github.com/muhlemmer/gu v0.3.1
 ## explicit; go 1.18
 github.com/muhlemmer/gu
+# github.com/pkg/term v1.1.0
+## explicit; go 1.14
+github.com/pkg/term
+github.com/pkg/term/termios
 # github.com/pmezard/go-difflib v1.0.0
 ## explicit
 github.com/pmezard/go-difflib/difflib
