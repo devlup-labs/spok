@@ -10,12 +10,16 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+
+
 // listCmd represents the alias list command
-var listCmd = &cobra.Command{
-	Use:   "list",
+var updateCmd = &cobra.Command{
+	Use:   "update",
 	Short: "List all aliases",
 	Long:  `List all aliases`,
 	Run: func(cmd *cobra.Command, args []string) {
+		serverAddress := os.Args[3]
+		
 		data, err := os.ReadFile(AliasFilePath)
 		if err != nil {
 			return
@@ -33,18 +37,47 @@ var listCmd = &cobra.Command{
 		menu := selector.NewMenu("Choose your alias:")
 
 		for aliasKey, aliasVal := range aliases.Aliases {
-			menu.AddItem(aliasKey, aliasVal.Value)
+			menu.AddItem(aliasKey, aliasVal.Name)
 		}
 
 		choice := menu.Display()
 
 		numLinesToClear := len(menu.MenuItems) + 1
 		selector.ClearMenu(numLinesToClear)
+		
+		aliasToUpdate := aliases.Aliases[choice]
 
-		fmt.Println(choice)
+		aliasToUpdate.Update(serverAddress)
+
+		aliases.Aliases[choice] = aliasToUpdate
+
+		f, err := os.Create(AliasFilePath)
+	
+		if err != nil {
+			fmt.Println("File not Found aliases.yml")
+
+			return
+		}
+		defer f.Close()
+
+		yamlData, err := yaml.Marshal(&aliases)
+		if err != nil {
+			fmt.Println("Error while Marshalling. ", err)
+
+			return
+		}
+
+		_, err = f.WriteString(string(yamlData))
+		if err != nil {
+			fmt.Println(err)
+			
+			return
+		}
+
+		
 	},
 }
 
 func init() {
-	AliasCmd.AddCommand(listCmd)
+	AliasCmd.AddCommand(updateCmd)
 }

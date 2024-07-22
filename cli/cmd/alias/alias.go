@@ -13,7 +13,11 @@ type Alias struct {
 }
 
 type Aliases struct {
-	Aliases []Alias `yaml:"aliases"`
+	Aliases map[string]Alias `yaml:"aliases"`
+}
+
+func (alias *Alias) Update(newAddress string) {
+	alias.Value = newAddress
 }
 
 var AliasFilePath string

@@ -11,8 +11,8 @@ import (
 )
 
 // listCmd represents the alias list command
-var listCmd = &cobra.Command{
-	Use:   "list",
+var removeCmd = &cobra.Command{
+	Use:   "remove",
 	Short: "List all aliases",
 	Long:  `List all aliases`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -30,21 +30,44 @@ var listCmd = &cobra.Command{
 			return
 		}
 
-		menu := selector.NewMenu("Choose your alias:")
+		menu := selector.NewMenu("Choose Alias for removal:")
 
 		for aliasKey, aliasVal := range aliases.Aliases {
-			menu.AddItem(aliasKey, aliasVal.Value)
+			menu.AddItem(aliasKey, aliasVal.Name)
 		}
 
 		choice := menu.Display()
 
 		numLinesToClear := len(menu.MenuItems) + 1
 		selector.ClearMenu(numLinesToClear)
+		
+		delete(aliases.Aliases, choice)
+	
+		f, err := os.Create(AliasFilePath)
+	
+		if err != nil {
+			fmt.Println("File not Found aliases.yml")
 
-		fmt.Println(choice)
-	},
+			return
+		}
+		defer f.Close()
+
+		yamlData, err := yaml.Marshal(&aliases)
+		if err != nil {
+			fmt.Println("Error while Marshalling. ", err)
+
+			return
+		}
+
+		_, err = f.WriteString(string(yamlData))
+		if err != nil {
+			fmt.Println(err)
+			
+			return
+		}
+},
 }
 
 func init() {
-	AliasCmd.AddCommand(listCmd)
+	AliasCmd.AddCommand(removeCmd)
 }
