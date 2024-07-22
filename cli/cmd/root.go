@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/devlup-labs/spok/cli/cmd/alias"
 	"github.com/spf13/cobra"
 )
 
@@ -12,5 +13,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	rootCmd.AddCommand(alias.AliasCmd)
+
 	cobra.CheckErr(rootCmd.Execute())
 }
