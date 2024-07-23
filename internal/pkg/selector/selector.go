@@ -92,6 +92,12 @@ func (m *Menu) Display() string {
 	}
 }
 
+func (m *Menu) Clear() {
+	for i := 0; i < (len(m.MenuItems) + 1); i++ {
+		fmt.Print("\033[F\033[K")
+	}
+}
+
 func getInput() byte {
 	t, _ := term.Open("/dev/tty")
 
@@ -122,11 +128,5 @@ func NewMenu(prompt string) *Menu {
 	return &Menu{
 		Prompt:    prompt,
 		MenuItems: make([]*MenuItem, 0),
-	}
-}
-
-func ClearMenu(lines int) {
-	for i := 0; i < lines; i++ {
-		fmt.Print("\033[F\033[K")
 	}
 }

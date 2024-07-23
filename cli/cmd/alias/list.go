@@ -2,12 +2,10 @@ package alias
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/devlup-labs/spok/internal/pkg/selector"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
 )
 
 // listCmd represents the alias list command
@@ -16,30 +14,23 @@ var listCmd = &cobra.Command{
 	Short: "List all aliases",
 	Long:  `List all aliases`,
 	Run: func(cmd *cobra.Command, args []string) {
-		data, err := os.ReadFile(AliasFilePath)
-		if err != nil {
-			return
-		}
-
 		aliases := new(Aliases)
+		cobra.CheckErr(aliases.ReadFromFile())
 
-		err = yaml.Unmarshal(data, aliases)
-		if err != nil {
-			log.Println("Error reading the aliases file")
+		if len(aliases.Aliases) == 0 {
+			fmt.Printf("No aliases found in the file: %s\n", AliasFilePath)
 
-			return
+			os.Exit(0)
 		}
 
-		menu := selector.NewMenu("Choose your alias:")
+		menu := selector.NewMenu("List of aliases:")
 
-		for _, alias := range aliases.Aliases {
-			menu.AddItem(alias.Name, alias.Value)
+		for alias, value := range aliases.Aliases {
+			menu.AddItem(alias, value.Value)
 		}
 
 		choice := menu.Display()
-
-		numLinesToClear := len(menu.MenuItems) + 1
-		selector.ClearMenu(numLinesToClear)
+		menu.Clear()
 
 		fmt.Println(choice)
 	},
