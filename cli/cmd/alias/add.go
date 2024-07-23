@@ -1,91 +1,48 @@
 package alias
 
 import (
+	"bufio"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
 )
 
-// listCmd represents the alias list command
+// addCmd represents the alias add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "List all aliases",
-	Long:  `List all aliases`,
-	Run: func(cmd *cobra.Command, args []string) {	
-		serverAddress := os.Args[3]
-		serverAlias := os.Args[4]
+	Short: "Add a new alias",
+	Long:  "Add a new alias to the aliases file",
+	Run: func(cmd *cobra.Command, args []string) {
+		var alias string
+		var value string
+		var description string
 
-		data, err := os.ReadFile(AliasFilePath)
+		if len(os.Args) < 4 {
+			fmt.Println("Invalid number of arguments")
+
+			os.Exit(1)
+		}
+
+		value = os.Args[3]
+
+		fmt.Print("Please provide a short, memorable name for the alias: ")
+		_, err := fmt.Scanln(&alias)
+		cobra.CheckErr(err)
+
+		fmt.Print("Provide a short description for the alias (Press ENTER to leave blank): ")
+		reader := bufio.NewReader(os.Stdin)
+		description, err = reader.ReadString('\n')
+		cobra.CheckErr(err)
+		description = description[:len(description)-1]
 
 		aliases := new(Aliases)
+		cobra.CheckErr(aliases.ReadFromFile())
 
-		if err != nil {
-			if os.IsNotExist(err) {
-				fmt.Println("File not found, creating...")
-				err = os.WriteFile(AliasFilePath, []byte("File created!"), 0644)
+		aliases.Add(alias, value, description)
+		cobra.CheckErr(aliases.WriteToFile())
 
-				if err != nil {
-					fmt.Println("Error creating file:", err)
-					return
-				}
-
-				fmt.Println("File created successfully!")
-				
-				aliases.Aliases = map[string]Alias{}
-
-			} else {
-				fmt.Println("Error reading file:", err)
-				return
-			}
-		} else {
-			fmt.Println("File exists!")
-			err = yaml.Unmarshal(data, aliases)
-			if err != nil {
-				log.Println("Error reading the aliases file")
-
-				return
-			}
-		}		
-
-		_, exist := aliases.Aliases[serverAlias]
-
-		if !exist {
-			fmt.Println("Creating a New Server Alias", serverAlias)
-			aliases.Aliases[serverAlias] = Alias{
-				Name:        serverAlias,
-				Value:       serverAddress,
-				Description: "Testing12345",
-			}
-		} else {
-			fmt.Println("Server Alias Already Exists!")
-		}
-
-		
-		f, err := os.Create(AliasFilePath)
-
-		if err != nil {
-			fmt.Println("File not Found aliases.yml")
-
-			return
-		}
-		defer f.Close()
-
-		yamlData, err := yaml.Marshal(&aliases)
-		if err != nil {
-			fmt.Println("Error while Marshalling. ", err)
-
-			return
-		}
-
-		_, err = f.WriteString(string(yamlData))
-		if err != nil {
-			fmt.Println(err)
-
-			return
-		}
+		fmt.Printf("Successfully added the alias to the file: %s\n", AliasFilePath)
 	},
 }
 
