@@ -90,7 +90,7 @@ func (m *Menu) Display() string {
 			m.CursorPos = (m.CursorPos + 1) % len(m.MenuItems)
 			m.renderMenuItems(true)
 		} else if keyCode == ctrl_c {
-			return "Exited !"
+			return ""
 		}
 	}
 }
