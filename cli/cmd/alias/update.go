@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-
 	"github.com/devlup-labs/spok/internal/pkg/selector"
 	"github.com/spf13/cobra"
 )
@@ -25,6 +24,11 @@ var updateCmd = &cobra.Command{
 		}
 
 		aliasToUpdate := menu.Display()
+
+		if aliasToUpdate == "" {
+			os.Exit(0)
+		}
+
 		menu.Clear()
 
 		menu = selector.NewMenu("What do you want to update?")
@@ -34,6 +38,11 @@ var updateCmd = &cobra.Command{
 		menu.AddItem("Description", "description")
 
 		fieldToUpdate := menu.Display()
+		
+		if fieldToUpdate == "" {
+			os.Exit(0)
+		}
+		
 		menu.Clear()
 
 		var fieldNewValue string
