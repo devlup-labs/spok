@@ -3,6 +3,8 @@ package alias
 import (
 	"fmt"
 	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/devlup-labs/spok/internal/pkg/selector"
 	"github.com/spf13/cobra"
@@ -32,10 +34,21 @@ var listCmd = &cobra.Command{
 		choice := menu.Display()
 		menu.Clear()
 
-		fmt.Println(choice)
+		if run, _ := cmd.Flags().GetBool("run"); run {
+			sshCommand := strings.Split(choice, " ")
+
+			cmd := exec.Command(sshCommand[0], sshCommand[1:]...)
+			cmd.Stdin = os.Stdin
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cobra.CheckErr(cmd.Run())
+		} else {
+			fmt.Println(choice)
+		}
 	},
 }
 
 func init() {
+	listCmd.Flags().BoolP("run", "r", false, "Run the selected alias")
 	AliasCmd.AddCommand(listCmd)
 }
