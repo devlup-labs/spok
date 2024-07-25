@@ -1,11 +1,15 @@
+//go:build windows
+// +build windows
+
 package selector
 
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/buger/goterm"
-	"github.com/pkg/term"
+	"golang.org/x/sys/windows"
 )
 
 type Menu struct {
@@ -81,7 +85,9 @@ func (m *Menu) Display() string {
 			return ""
 		} else if keyCode == enter {
 			menuItem := m.MenuItems[m.CursorPos]
+
 			fmt.Println("\r")
+
 			return menuItem.ID
 		} else if keyCode == up {
 			m.CursorPos = (m.CursorPos + len(m.MenuItems) - 1) % len(m.MenuItems)
@@ -102,19 +108,31 @@ func (m *Menu) Clear() {
 }
 
 func getInput() byte {
-	t, _ := term.Open("/dev/tty")
+	hConsole := windows.Handle(os.Stdin.Fd())
 
-	err := term.RawMode(t)
+	var originalMode uint32
+
+	err := windows.GetConsoleMode(hConsole, &originalMode)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var read int
-	readBytes := make([]byte, 3)
-	read, err = t.Read(readBytes)
+	rawMode := originalMode &^ (windows.ENABLE_ECHO_INPUT | windows.ENABLE_LINE_INPUT | windows.ENABLE_PROCESSED_INPUT)
 
-	t.Restore()
-	t.Close()
+	err = windows.SetConsoleMode(hConsole, rawMode)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer func() {
+		windows.SetConsoleMode(hConsole, originalMode)
+	}()
+
+	readBytes := make([]byte, 3)
+	read, err := os.Stdin.Read(readBytes)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if read == 3 {
 		if _, ok := keys[readBytes[2]]; ok {
