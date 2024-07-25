@@ -23,6 +23,7 @@ var up byte = 65
 var down byte = 66
 var escape byte = 27
 var enter byte = 13
+var ctrl_c byte = 3
 
 var keys = map[byte]bool{
 	up:   true,
@@ -88,6 +89,8 @@ func (m *Menu) Display() string {
 		} else if keyCode == down {
 			m.CursorPos = (m.CursorPos + 1) % len(m.MenuItems)
 			m.renderMenuItems(true)
+		} else if keyCode == ctrl_c {
+			return ""
 		}
 	}
 }

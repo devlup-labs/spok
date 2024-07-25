@@ -45,6 +45,11 @@ var removeCmd = &cobra.Command{
 		}
 
 		choice := menu.Display()
+
+		if choice == "" {
+			os.Exit(0)
+		}
+
 		menu.Clear()
 
 		userInput := "n"
