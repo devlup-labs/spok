@@ -21,6 +21,7 @@ An easier way for remote server authentication. Powered by [OpenPubkey](https://
 - **Scalability**: Add as many people as necessary to your server via their emails.
 - **Security**: This project integrates [OpenPubkey](https://github.com/openpubkey/openpubkey), leveraging the OpenID Connect (OIDC) Protocol for enhanced SSH authentication security.
 - **Single Command**: Configure your server for SPoK with just one command.
+- **Server Aliases**: Add aliases for your servers for easy access.
 - **Runs Everywhere**: Set up SPoK on any machine—whether it's local, remote, cloud-based, physical server, or a VM—and on any architecture, including x86 or ARM
 
 ## Why SPok?
