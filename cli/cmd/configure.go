@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -8,6 +9,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/devlup-labs/spok/cli/cmd/alias"
 	"github.com/devlup-labs/spok/internal/pkg"
 	"github.com/spf13/cobra"
 )
@@ -208,6 +210,38 @@ var configureCmd = &cobra.Command{
 		}
 
 		fmt.Println("Configured SPoK server for:", emailArgs)
+
+		userInput := "y"
+
+		fmt.Print("Would you like to add an alias for this server now? [Y/n]: ")
+		fmt.Scanln(&userInput)
+
+		if strings.ToLower(userInput) == "n" {
+			os.Exit(0)
+		} else {
+			var aliasName string
+			var value string
+			var description string
+
+			value = fmt.Sprintf("ssh %s", userArgs)
+
+			fmt.Print("Enter an alias for this server: ")
+			fmt.Scanln(&aliasName)
+
+			fmt.Print("Provide a short description for the alias (Press ENTER to leave blank): ")
+			reader := bufio.NewReader(os.Stdin)
+			description, err = reader.ReadString('\n')
+			cobra.CheckErr(err)
+			description = description[:len(description)-1]
+
+			aliases := new(alias.Aliases)
+			cobra.CheckErr(aliases.ReadFromFile())
+
+			aliases.Add(aliasName, value, description)
+			cobra.CheckErr(aliases.WriteToFile())
+
+			fmt.Printf("Successfully added the alias to the file: %s\n", alias.AliasFilePath)
+		}
 	},
 }
 
