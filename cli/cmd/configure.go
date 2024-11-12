@@ -23,8 +23,10 @@ var configureCmd = &cobra.Command{
 		fmt.Println("---Setup Initiated----")
 
 		serverFlag, _ := cmd.Flags().GetString("server")
+		port, _ := cmd.Flags().GetString("port")
 		keyFlag, _ := cmd.Flags().GetString("key")
 		emailFlag, _ := cmd.Flags().GetString("email")
+
 		emailArgs := emailFlag
 		userArgs := serverFlag
 
@@ -80,6 +82,8 @@ var configureCmd = &cobra.Command{
 		if privateKeyAuth && privateKeyPath != "" {
 			osCommand = exec.Command(
 				"ssh",
+				"-p",
+				port,
 				"-i",
 				privateKeyPath,
 				userArgs,
@@ -89,6 +93,8 @@ var configureCmd = &cobra.Command{
 		} else {
 			osCommand = exec.Command(
 				"ssh",
+				"-p",
+				port,
 				userArgs,
 				"uname",
 				"-o",
@@ -117,6 +123,8 @@ var configureCmd = &cobra.Command{
 		if privateKeyAuth && privateKeyPath != "" {
 			scpCommandScript = []string{
 				"scp",
+				"-P",
+				port,
 				"-i",
 				privateKeyPath,
 				configPath,
@@ -124,6 +132,8 @@ var configureCmd = &cobra.Command{
 			}
 			sshCommandChmod = []string{
 				"ssh",
+				"-p",
+				port,
 				"-i",
 				privateKeyPath,
 				userArgs,
@@ -133,6 +143,8 @@ var configureCmd = &cobra.Command{
 			}
 			sshCommandConfigure = []string{
 				"ssh",
+				"-p",
+				port,
 				"-i",
 				privateKeyPath,
 				userArgs,
@@ -144,11 +156,15 @@ var configureCmd = &cobra.Command{
 		} else {
 			scpCommandScript = []string{
 				"scp",
+				"-P",
+				port,
 				configPath,
 				userArgs + ":" + serverConfigPath,
 			}
 			sshCommandChmod = []string{
 				"ssh",
+				"-p",
+				port,
 				userArgs,
 				"chmod",
 				"+x",
@@ -156,6 +172,8 @@ var configureCmd = &cobra.Command{
 			}
 			sshCommandConfigure = []string{
 				"ssh",
+				"-p",
+				port,
 				userArgs,
 				serverConfigPath,
 				emailArgs,
@@ -223,7 +241,7 @@ var configureCmd = &cobra.Command{
 			var value string
 			var description string
 
-			value = fmt.Sprintf("ssh %s", userArgs)
+			value = fmt.Sprintf("ssh -p %s %s", port, userArgs)
 
 			fmt.Print("Enter an alias for this server: ")
 			fmt.Scanln(&aliasName)
@@ -249,9 +267,15 @@ func init() {
 	rootCmd.AddCommand(configureCmd)
 
 	configureCmd.Flags().StringP(
-		"server", "s", "", "The server you want to configure in")
+		"server", "s", "", "The server you want to configure in",
+	)
 	configureCmd.Flags().StringP(
-		"email", "e", "", "The email you want to configure with")
+		"email", "e", "", "The email you want to configure with",
+	)
 	configureCmd.Flags().StringP(
-		"key", "i", "", "To choose if you want to use private key for setup")
+		"key", "i", "", "To choose if you want to use private key for setup",
+	)
+	configureCmd.Flags().StringP(
+		"port", "p", "22", "The port to connect to the server on",
+	)
 }
