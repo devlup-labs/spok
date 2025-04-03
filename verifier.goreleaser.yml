@@ -19,6 +19,8 @@ builds:
       - -mod=vendor
     ldflags:
       - -X github.com/devlup-labs/spok/internal/pkg.Version={{ .Version }}
+      - -X github.com/devlup-labs/spok/internal/pkg/constants.clientID={{ .Env.GOOGLE_CLIENT_ID }}
+      - -X github.com/devlup-labs/spok/internal/pkg/constants.clientSecret={{ .Env.GOOGLE_CLIENT_SECRET }}
 
 release:
   prerelease: auto

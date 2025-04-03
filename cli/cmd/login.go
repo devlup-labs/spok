@@ -11,9 +11,9 @@ import (
 
 	"github.com/devlup-labs/spok/internal/pkg/constants"
 	"github.com/devlup-labs/spok/internal/pkg/sshcert"
-	"github.com/devlup-labs/spok/openpubkey/client"
-	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwa"
+	"github.com/openpubkey/openpubkey/client"
+	"github.com/openpubkey/openpubkey/util"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
 )
@@ -32,9 +32,8 @@ var loginCmd = &cobra.Command{
 		cobra.CheckErr(err)
 
 		opkClient, err := client.New(
-			&constants.Op,
+			constants.Op,
 			client.WithSigner(signer, alg),
-			client.WithSignGQ(false),
 		)
 		cobra.CheckErr(err)
 

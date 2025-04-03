@@ -1,17 +1,20 @@
 package cmd
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/fs"
+	"log"
 	"os"
 	"strings"
 
 	"github.com/devlup-labs/spok/internal/pkg/constants"
 	"github.com/devlup-labs/spok/internal/pkg/policy"
 	"github.com/devlup-labs/spok/internal/pkg/sshcert"
-	"github.com/devlup-labs/spok/openpubkey/client"
-	"github.com/devlup-labs/spok/openpubkey/pktoken"
+	"github.com/openpubkey/openpubkey/client"
+	"github.com/openpubkey/openpubkey/pktoken"
+	"github.com/openpubkey/openpubkey/verifier"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/exp/slices"
@@ -92,7 +95,16 @@ func authorizedKeysCommand(
 		return "", err
 	}
 
-	if pkt, err := cert.VerifySshPktCert(op); err != nil {
+	pktVerifier, err := verifier.New(op)
+	if err != nil {
+		log.Println(
+			"Failed to create pk token verifier (likely bad configuration):", err,
+		)
+
+		return "", err
+	}
+
+	if pkt, err := cert.VerifySshPktCert(context.Background(), *pktVerifier); err != nil {
 		return "", err
 	} else if err := policyEnforcer(userArg, pkt); err != nil {
 		return "", err
@@ -145,7 +157,9 @@ We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 		}
 
 		if len(args) != 3 {
-			fmt.Println("Invalid number of arguments for verify, should be `verifier verify <User> <Cert> <Key type>`")
+			fmt.Println(
+				"Invalid number of arguments for verify, should be `verifier verify <User> <Cert> <Key type>`",
+			)
 
 			os.Exit(1)
 		}
@@ -159,7 +173,7 @@ We prepend "Arg" to specify which ones are arguments sent by sshd. They are:
 			typArg,
 			certB64Arg,
 			policyEnforcer.checkPolicy,
-			&constants.Op,
+			constants.Op,
 		)
 		cobra.CheckErr(err)
 
