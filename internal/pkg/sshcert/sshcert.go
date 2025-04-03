@@ -5,11 +5,11 @@ import (
 	"crypto/rand"
 	"encoding/json"
 	"fmt"
+	"time"
 
-	"github.com/devlup-labs/spok/openpubkey/client"
-	"github.com/devlup-labs/spok/openpubkey/pktoken"
-	"github.com/devlup-labs/spok/openpubkey/util"
 	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/openpubkey/openpubkey/pktoken"
+	"github.com/openpubkey/openpubkey/verifier"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -34,12 +34,11 @@ func New(pkt *pktoken.PKToken, principals []string) (*SshCertSmuggler, error) {
 		return nil, err
 	}
 
-	pktJson, err := json.Marshal(pkt)
+	pktCom, err := pkt.Compact()
 	if err != nil {
 		return nil, err
 	}
 
-	pktB64 := string(util.Base64EncodeForJWT(pktJson))
 	sshSmuggler := SshCertSmuggler{
 		SshCert: &ssh.Certificate{
 			Key:             pubkeySsh,
@@ -54,11 +53,12 @@ func New(pkt *pktoken.PKToken, principals []string) (*SshCertSmuggler, error) {
 					"permit-port-forwarding":  "",
 					"permit-pty":              "",
 					"permit-user-rc":          "",
-					"openpubkey-pkt":          pktB64,
+					"openpubkey-pkt":          string(pktCom),
 				},
 			},
 		},
 	}
+
 	return &sshSmuggler, nil
 }
 
@@ -71,8 +71,15 @@ func NewFromAuthorizedKey(
 	); err != nil {
 		return nil, err
 	} else {
+		sshCert, ok := certPubkey.(*ssh.Certificate)
+		if !ok {
+			return nil, fmt.Errorf(
+				"parsed SSH authorized_key is not an SSH certificate",
+			)
+		}
+
 		opkcert := &SshCertSmuggler{
-			SshCert: certPubkey.(*ssh.Certificate),
+			SshCert: sshCert,
 		}
 
 		return opkcert, nil
@@ -99,26 +106,27 @@ func (s *SshCertSmuggler) VerifyCaSig(caPubkey ssh.PublicKey) error {
 }
 
 func (s *SshCertSmuggler) GetPKToken() (*pktoken.PKToken, error) {
-	pktB64, ok := s.SshCert.Extensions["openpubkey-pkt"]
+	pktCom, ok := s.SshCert.Extensions["openpubkey-pkt"]
 	if !ok {
-		return nil, fmt.Errorf("cert is missing required openpubkey-pkt extension")
+		return nil, fmt.Errorf(
+			"cert is missing required openpubkey-pkt extension",
+		)
 	}
 
-	pktJson, err := util.Base64DecodeForJWT([]byte(pktB64))
+	pkt, err := pktoken.NewFromCompact([]byte(pktCom))
 	if err != nil {
-		return nil, fmt.Errorf("openpubkey-pkt extension in cert failed deserialization: %w", err)
-	}
-
-	var pkt *pktoken.PKToken
-	if err = json.Unmarshal(pktJson, &pkt); err != nil {
-		return nil, err
+		return nil, fmt.Errorf(
+			"openpubkey-pkt extension in cert failed deserialization: %w",
+			err,
+		)
 	}
 
 	return pkt, nil
 }
 
 func (s *SshCertSmuggler) VerifySshPktCert(
-	op client.OpenIdProvider,
+	ctx context.Context,
+	pktVerifier verifier.Verifier,
 ) (*pktoken.PKToken, error) {
 	pkt, err := s.GetPKToken()
 	if err != nil {
@@ -128,8 +136,10 @@ func (s *SshCertSmuggler) VerifySshPktCert(
 		)
 	}
 
-	err = client.VerifyPKToken(context.Background(), pkt, op)
-	if err != nil {
+	ctxWithTimeout, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
+	if err := pktVerifier.VerifyPKToken(ctxWithTimeout, pkt); err != nil {
 		return nil, err
 	}
 
@@ -137,6 +147,7 @@ func (s *SshCertSmuggler) VerifySshPktCert(
 	if err != nil {
 		return nil, err
 	}
+
 	upk := cic.PublicKey()
 
 	cryptoCertKey := (s.SshCert.Key.(ssh.CryptoPublicKey)).CryptoPublicKey()
@@ -148,7 +159,9 @@ func (s *SshCertSmuggler) VerifySshPktCert(
 	if jwk.Equal(jwkCertKey, upk) {
 		return pkt, nil
 	} else {
-		return nil, fmt.Errorf("public key 'upk' in PK Token does not match public key in certificate")
+		return nil, fmt.Errorf(
+			"public key 'upk' in PK Token does not match public key in certificate",
+		)
 	}
 }
 
