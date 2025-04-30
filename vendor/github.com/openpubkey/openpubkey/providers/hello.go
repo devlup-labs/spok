@@ -19,18 +19,21 @@ package providers
 import (
 	"context"
 	"net/http"
+
 	"time"
 
 	"github.com/openpubkey/openpubkey/discover"
 )
 
-type GitlabOptions struct {
+const helloIssuer = "https://issuer.hello.coop"
+
+// HelloOptions is an options struct that configures how providers.HelloOp
+// operates. See providers.GetDefaultGoogleOpOptions for the recommended default
+// values to use when interacting with Google as the OpenIdProvider.
+type HelloOptions struct {
 	// ClientID is the client ID of the OIDC application. It should be the
 	// expected "aud" claim in received ID tokens from the OP.
 	ClientID string
-	// ClientSecret is the client secret of the OIDC application. Some OPs do
-	// not require that this value is set.
-	ClientSecret string
 	// Issuer is the OP's issuer URI for performing OIDC authorization and
 	// discovery.
 	Issuer string
@@ -65,11 +68,11 @@ type GitlabOptions struct {
 	IssuedAtOffset time.Duration
 }
 
-func GetDefaultGitlabOpOptions() *GitlabOptions {
-	return &GitlabOptions{
-		ClientID:   "8d8b7024572c7fd501f64374dec6bba37096783dfcd792b3988104be08cb6923",
-		Issuer:     gitlabIssuer,
-		Scopes:     []string{"openid email"},
+func GetDefaultHelloOpOptions() *HelloOptions {
+	return &HelloOptions{
+		Issuer:     helloIssuer,
+		ClientID:   "app_xejobTKEsDNSRd5vofKB2iay_2rN",
+		Scopes:     []string{"openid profile email"},
 		PromptType: "consent",
 		AccessType: "offline",
 		RedirectURIs: []string{
@@ -84,31 +87,39 @@ func GetDefaultGitlabOpOptions() *GitlabOptions {
 	}
 }
 
-func NewGitlabOpWithOptions(opts *GitlabOptions) BrowserOpenIdProvider {
-	return &GitlabOp{
-		StandardOp{
-			clientID:                  opts.ClientID,
-			Scopes:                    opts.Scopes,
-			PromptType:                opts.PromptType,
-			AccessType:                opts.AccessType,
-			RedirectURIs:              opts.RedirectURIs,
-			GQSign:                    opts.GQSign,
-			OpenBrowser:               opts.OpenBrowser,
-			HttpClient:                opts.HttpClient,
-			IssuedAtOffset:            opts.IssuedAtOffset,
-			issuer:                    opts.Issuer,
-			requestTokensOverrideFunc: nil,
-			publicKeyFinder: discover.PublicKeyFinder{
-				JwksFunc: func(ctx context.Context, issuer string) ([]byte, error) {
-					return discover.GetJwksByIssuer(ctx, issuer, opts.HttpClient)
-				},
+// NewHelloOp creates a Google OP (OpenID Provider) using the
+// default configurations options. It uses the OIDC Relying Party (Client)
+// setup by the OpenPubkey project.
+func NewHelloOp() BrowserOpenIdProvider {
+	options := GetDefaultHelloOpOptions()
+	return NewHelloOpWithOptions(options)
+}
+
+// NewHelloOpWithOptions creates a Hello OP with configuration specified
+// using an options struct. This is useful if you want to use your own OIDC
+// Client or override the configuration.
+func NewHelloOpWithOptions(opts *HelloOptions) BrowserOpenIdProvider {
+	return &HelloOp{
+		clientID:                  opts.ClientID,
+		Scopes:                    opts.Scopes,
+		RedirectURIs:              opts.RedirectURIs,
+		PromptType:                opts.PromptType,
+		AccessType:                opts.AccessType,
+		GQSign:                    opts.GQSign,
+		OpenBrowser:               opts.OpenBrowser,
+		HttpClient:                opts.HttpClient,
+		IssuedAtOffset:            opts.IssuedAtOffset,
+		issuer:                    opts.Issuer,
+		requestTokensOverrideFunc: nil,
+		publicKeyFinder: discover.PublicKeyFinder{
+			JwksFunc: func(ctx context.Context, issuer string) ([]byte, error) {
+				return discover.GetJwksByIssuer(ctx, issuer, opts.HttpClient)
 			},
 		},
 	}
 }
 
-type GitlabOp = StandardOpRefreshable
+type HelloOp = StandardOp
 
-var _ OpenIdProvider = (*GitlabOp)(nil)
-var _ BrowserOpenIdProvider = (*GitlabOp)(nil)
-var _ RefreshableOpenIdProvider = (*GitlabOp)(nil)
+var _ OpenIdProvider = (*HelloOp)(nil)
+var _ BrowserOpenIdProvider = (*HelloOp)(nil)

@@ -43,6 +43,11 @@ type GoogleOptions struct {
 	// Scopes is the list of scopes to send to the OP in the initial
 	// authorization request.
 	Scopes []string
+	// PromptType is the type of prompt to use when requesting authorization from the user. Typically
+	// this is set to "consent".
+	PromptType string
+	// AccessType is the type of access to request from the OP. Typically this is set to "offline".
+	AccessType string
 	// RedirectURIs is the list of authorized redirect URIs that can be
 	// redirected to by the OP after the user completes the authorization code
 	// flow exchange. Ensure that your OIDC application is configured to accept
@@ -74,6 +79,8 @@ func GetDefaultGoogleOpOptions() *GoogleOptions {
 		// Google requires a ClientSecret even if this a public OIDC App
 		ClientSecret: "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", // The client secret is a public value
 		Scopes:       []string{"openid profile email"},
+		PromptType:   "consent",
+		AccessType:   "offline",
 		RedirectURIs: []string{
 			"http://localhost:3000/login-callback",
 			"http://localhost:10001/login-callback",
@@ -98,26 +105,30 @@ func NewGoogleOp() BrowserOpenIdProvider {
 // using an options struct. This is useful if you want to use your own OIDC
 // Client or override the configuration.
 func NewGoogleOpWithOptions(opts *GoogleOptions) BrowserOpenIdProvider {
-	return &StandardOp{
-		clientID:                  opts.ClientID,
-		clientSecret:              opts.ClientSecret,
-		Scopes:                    opts.Scopes,
-		RedirectURIs:              opts.RedirectURIs,
-		GQSign:                    opts.GQSign,
-		OpenBrowser:               opts.OpenBrowser,
-		HttpClient:                opts.HttpClient,
-		IssuedAtOffset:            opts.IssuedAtOffset,
-		issuer:                    opts.Issuer,
-		requestTokensOverrideFunc: nil,
-		publicKeyFinder: discover.PublicKeyFinder{
-			JwksFunc: func(ctx context.Context, issuer string) ([]byte, error) {
-				return discover.GetJwksByIssuer(ctx, issuer, opts.HttpClient)
+	return &GoogleOp{
+		StandardOp{
+			clientID:                  opts.ClientID,
+			ClientSecret:              opts.ClientSecret,
+			Scopes:                    opts.Scopes,
+			PromptType:                opts.PromptType,
+			AccessType:                opts.AccessType,
+			RedirectURIs:              opts.RedirectURIs,
+			GQSign:                    opts.GQSign,
+			OpenBrowser:               opts.OpenBrowser,
+			HttpClient:                opts.HttpClient,
+			IssuedAtOffset:            opts.IssuedAtOffset,
+			issuer:                    opts.Issuer,
+			requestTokensOverrideFunc: nil,
+			publicKeyFinder: discover.PublicKeyFinder{
+				JwksFunc: func(ctx context.Context, issuer string) ([]byte, error) {
+					return discover.GetJwksByIssuer(ctx, issuer, opts.HttpClient)
+				},
 			},
 		},
 	}
 }
 
-type GoogleOp = StandardOp
+type GoogleOp = StandardOpRefreshable
 
 var _ OpenIdProvider = (*GoogleOp)(nil)
 var _ BrowserOpenIdProvider = (*GoogleOp)(nil)
