@@ -7,12 +7,12 @@ toolchain go1.24.1
 require (
 	github.com/buger/goterm v1.0.4
 	github.com/lestrrat-go/jwx/v2 v2.0.21
-	github.com/openpubkey/openpubkey v0.8.0
+	github.com/openpubkey/openpubkey v0.13.1
 	github.com/pkg/term v1.1.0
 	github.com/spf13/cobra v1.8.0
-	golang.org/x/crypto v0.35.0
+	golang.org/x/crypto v0.36.0
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225
-	golang.org/x/sys v0.30.0
+	golang.org/x/sys v0.31.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -48,6 +48,6 @@ require (
 	go.opentelemetry.io/otel/metric v1.29.0 // indirect
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	golang.org/x/oauth2 v0.25.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
